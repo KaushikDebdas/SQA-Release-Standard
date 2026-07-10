@@ -1,0 +1,3495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQA Release Standards — Bad vs Good Examples</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #0F172A;
+    --ink-soft:   #1E293B;
+    --paper:      #FAF8F4;
+    --paper-pure: #FFFFFF;
+    --line:       #E5E1D8;
+    --line-soft:  #EFEBE2;
+    --muted:      #64748B;
+    --muted-dark: #475569;
+
+    --bad:        #DC2626;
+    --bad-deep:   #991B1B;
+    --bad-tint:   #FEF2F2;
+    --bad-line:   #FCA5A5;
+
+    --good:       #047857;
+    --good-deep:  #065F46;
+    --good-tint:  #ECFDF5;
+    --good-line:  #6EE7B7;
+
+    --warn:       #B45309;
+    --warn-tint:  #FEF3C7;
+
+    --display: 'Fraunces', 'Cambria', Georgia, serif;
+    --body:    'IBM Plex Sans', system-ui, sans-serif;
+    --mono:    'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+
+  body {
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ============= HERO ============= */
+  .hero {
+    background: var(--ink);
+    color: var(--paper-pure);
+    padding: 5rem 2.5rem 4.5rem;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 4px solid var(--bad);
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 8px;
+    background: var(--bad);
+  }
+  .hero-inner { max-width: 1280px; margin: 0 auto; }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #94A3B8;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-eyebrow::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #334155;
+    max-width: 220px;
+  }
+  .hero-title {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6.5vw, 5rem);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.7rem;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--bad);
+    font-weight: 800;
+  }
+  .hero-sub {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: #CBD5E1;
+    max-width: 56ch;
+    margin: 1.5rem 0 2.5rem;
+    line-height: 1.45;
+  }
+  .hero-stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1.5px solid var(--bad);
+    color: var(--bad);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.55rem 1rem;
+    background: rgba(220,38,38,0.08);
+  }
+  .hero-stamp::before {
+    content: "●";
+    color: var(--bad);
+    font-size: 0.6rem;
+  }
+
+  /* ============= NAV ============= */
+  .nav-strip {
+    background: var(--paper-pure);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: saturate(140%) blur(8px);
+  }
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.7rem 2.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.4rem;
+  }
+  .nav-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    border-right: 1px solid var(--line);
+    padding-right: 1.2rem;
+    padding-top: 0.4rem;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+  .nav-links {
+    display: flex;
+    gap: 0.4rem 1.05rem;
+    flex-wrap: wrap;
+    flex: 1;
+    row-gap: 0.5rem;
+  }
+  .nav-links a {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    font-weight: 500;
+    transition: color 0.15s;
+    padding: 0.15rem 0;
+  }
+  .nav-links a:hover { color: var(--bad); }
+  .nav-links a span { color: var(--muted); margin-right: 0.35rem; font-family: var(--mono); font-size: 0.78em; }
+
+  /* ============= MAIN ============= */
+  main { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
+
+  .section {
+    padding: 5rem 0 4rem;
+    border-bottom: 1px dashed var(--line);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--ink);
+  }
+  .section-num {
+    font-family: var(--display);
+    font-size: 4.5rem;
+    font-weight: 800;
+    line-height: 0.9;
+    color: var(--ink);
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .section-num em {
+    font-style: italic;
+    color: var(--bad);
+    font-size: 0.6em;
+    vertical-align: top;
+  }
+  .section-info {
+    padding-bottom: 0.5rem;
+  }
+  .section-kicker {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(1.75rem, 3.5vw, 2.4rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .section-lede {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--muted-dark);
+    margin-top: 0.7rem;
+    max-width: 65ch;
+  }
+
+  /* ============= COMPARE GRID ============= */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .col {
+    border: 1px solid;
+    border-radius: 6px;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .col.bad  { background: var(--bad-tint);  border-color: var(--bad-line); }
+  .col.good { background: var(--good-tint); border-color: var(--good-line); }
+
+  .col-head {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .col.bad  .col-head { background: var(--bad);  color: white; border-color: var(--bad); }
+  .col.good .col-head { background: var(--good); color: white; border-color: var(--good); }
+  .col-head svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+  .col-mockup {
+    padding: 2rem 1.5rem;
+    background: var(--paper-pure);
+    border-bottom: 1px solid var(--line);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .col-notes {
+    padding: 1rem 1.25rem 1.25rem;
+    background: transparent;
+  }
+  .note-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .note-list li {
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    padding-left: 1.5rem;
+    position: relative;
+  }
+  .note-list li::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: var(--mono);
+    font-size: 0.85em;
+    font-weight: 700;
+  }
+  .col.bad .note-list li::before  { content: "✕"; color: var(--bad); }
+  .col.good .note-list li::before { content: "✓"; color: var(--good); }
+
+  /* ============= MOCK UI ELEMENTS ============= */
+  .mock {
+    font-family: var(--body);
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .mock-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+  .mock-input {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 1.5px solid var(--line);
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: white;
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .mock-input.error  { border-color: var(--bad); background: #FEF2F2; }
+  .mock-input.valid  { border-color: var(--good); }
+  .mock-input::placeholder { color: #94A3B8; }
+  .mock-input:focus { outline: none; border-color: var(--ink); }
+
+  .mock-help {
+    margin-top: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .mock-help.error { color: var(--bad); }
+  .mock-help.success { color: var(--good); }
+
+  .mock-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mock-btn-primary { background: var(--ink); color: white; }
+  .mock-btn-primary:hover { background: var(--ink-soft); }
+  .mock-btn-disabled { background: #CBD5E1; color: #64748B; cursor: not-allowed; }
+  .mock-btn-danger  { background: var(--bad); color: white; }
+  .mock-btn-loading { background: var(--ink-soft); color: white; cursor: wait; pointer-events: none; }
+  .mock-btn-full   { width: 100%; }
+
+  .mock-spinner {
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .mock-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .mock-row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mock-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.88rem;
+  }
+  .mock-checkbox input { accent-color: var(--ink); }
+
+  .mock-pwd-wrap { position: relative; }
+  .mock-pwd-wrap .eye {
+    position: absolute;
+    right: 0.75rem; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none; cursor: pointer;
+    color: var(--muted);
+    padding: 0.25rem;
+    display: flex;
+  }
+  .mock-pwd-wrap .eye svg { width: 18px; height: 18px; }
+
+  .mock-strength {
+    display: flex;
+    gap: 4px;
+    margin-top: 0.5rem;
+  }
+  .mock-strength span {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: #E2E8F0;
+  }
+  .mock-strength span.s1 { background: var(--bad); }
+  .mock-strength span.s2 { background: var(--warn); }
+  .mock-strength span.s3 { background: var(--good); }
+  .mock-strength + .mock-help { display: flex; justify-content: space-between; margin-top: 0.5rem; }
+
+  .mock-toast {
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    background: #FEF2F2;
+    border-left: 3px solid var(--bad);
+    color: var(--bad-deep);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  .mock-toast strong { font-weight: 600; }
+
+  /* DevTools-style code block */
+  .mock-devtools {
+    background: #0F172A;
+    color: #94A3B8;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    padding: 0.85rem 1rem;
+    border-radius: 5px;
+    margin-top: 0.85rem;
+    line-height: 1.55;
+    overflow-x: auto;
+  }
+  .mock-devtools .key { color: #93C5FD; }
+  .mock-devtools .str { color: #FCA5A5; }
+  .mock-devtools .str.safe { color: #6EE7B7; }
+  .mock-devtools .cmt { color: #475569; }
+  .mock-devtools .header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 0.4rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #64748B;
+    border-bottom: 1px solid #1E293B;
+    padding-bottom: 0.4rem;
+  }
+  .mock-devtools .header .net { color: #FCA5A5; }
+  .mock-devtools .header .net.safe { color: #6EE7B7; }
+
+  /* Upload */
+  .mock-upload {
+    border: 2px dashed var(--line);
+    border-radius: 6px;
+    padding: 1.5rem;
+    text-align: center;
+    background: #F8FAFC;
+    cursor: pointer;
+  }
+  .mock-upload .icon {
+    width: 36px; height: 36px;
+    margin: 0 auto 0.6rem;
+    color: var(--muted);
+  }
+  .mock-upload .label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .mock-upload .meta {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .mock-progress {
+    margin-top: 1rem;
+  }
+  .mock-progress .file-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+    color: var(--ink-soft);
+  }
+  .mock-progress .file-row .pct { font-family: var(--mono); color: var(--muted); }
+  .mock-progress .bar {
+    width: 100%; height: 6px;
+    background: #E2E8F0;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .mock-progress .bar > div {
+    height: 100%;
+    background: var(--good);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+  .mock-progress .actions {
+    margin-top: 0.6rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+  .mock-progress .actions button {
+    background: none;
+    border: 1px solid var(--line);
+    padding: 0.35rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* Header navigation mock */
+  .mock-nav {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .mock-nav .top {
+    padding: 0.85rem 1.2rem;
+    background: var(--ink);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mock-nav .logo {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+  }
+  .mock-nav .links {
+    display: flex;
+    gap: 1.3rem;
+    font-size: 0.85rem;
+  }
+  .mock-nav .links a {
+    color: white;
+    opacity: 0.85;
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+  }
+  .mock-nav .links a.active {
+    opacity: 1;
+    border-bottom-color: var(--bad);
+  }
+  .mock-nav .body-area {
+    padding: 1.5rem 1.2rem;
+    background: white;
+    color: var(--muted-dark);
+    font-size: 0.85rem;
+    min-height: 70px;
+  }
+  .mock-nav.broken .top { background: linear-gradient(#0F172A, #0F172A) padding-box; border-bottom: 0; padding-bottom: 1.4rem; margin-bottom: -0.6rem; position: relative; z-index: 2; }
+  .mock-nav.broken .body-area { color: #94A3B8; padding-top: 0.8rem; position: relative; }
+  .mock-nav.broken .body-area::before {
+    content: "Lorem ipsum content hidden behind sticky header...";
+    color: var(--bad);
+    font-style: italic;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .mock-broken-img {
+    display: inline-flex;
+    width: 22px; height: 22px;
+    border: 1px dashed var(--bad);
+    align-items: center;
+    justify-content: center;
+    color: var(--bad);
+    font-size: 11px;
+    background: white;
+    border-radius: 2px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+
+  /* Phone mock for mobile field */
+  .mock-phone-row { display: flex; gap: 0; }
+  .mock-phone-row .country {
+    padding: 0.7rem 0.6rem 0.7rem 0.85rem;
+    border: 1.5px solid var(--line);
+    border-right: none;
+    background: #F8FAFC;
+    border-radius: 5px 0 0 5px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.95rem;
+  }
+  .mock-phone-row .country .flag {
+    width: 22px; height: 16px;
+    background: linear-gradient(to bottom, #006A4E 50%, #F42A41 50%);
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+  }
+  .mock-phone-row .country .flag::after {
+    content: "";
+    position: absolute;
+    top: 25%; left: 35%;
+    width: 8px; height: 8px;
+    background: #F42A41;
+    border-radius: 50%;
+  }
+  .mock-phone-row .mock-input {
+    border-radius: 0 5px 5px 0;
+    flex: 1;
+    border-left-width: 1.5px;
+  }
+  .mock-phone-row.no-country .mock-input { border-radius: 5px; }
+
+  /* Footer */
+  footer {
+    background: var(--ink);
+    color: #CBD5E1;
+    padding: 3.5rem 2.5rem 2.5rem;
+    margin-top: 0;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  footer h3 {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  footer p {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: #94A3B8;
+    max-width: 50ch;
+  }
+  footer .meta {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #64748B;
+  }
+  footer .meta span { color: var(--bad); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .compare { grid-template-columns: 1fr; }
+    .section-head { grid-template-columns: 1fr; gap: 0.5rem; }
+    .section-num { font-size: 3rem; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .hero { padding: 3rem 1.5rem 2.5rem; }
+    main { padding: 0 1.5rem; }
+    .nav-inner { padding: 0.85rem 1.5rem; }
+  }
+
+  /* selection */
+  ::selection { background: var(--ink); color: var(--paper); }
+
+  /* ---- additions for sections 09..24 ---- */
+  .mock-radio { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0; font-size: 0.95rem; color: var(--ink); }
+  .mock-radio input { accent-color: var(--ink); width: 16px; height: 16px; }
+  .mock-radio.misaligned { padding: 0; }
+  .mock-radio-group { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.4rem 0; }
+  .mock-radio-group .group-label { font-size: 0.8rem; font-weight:600; color: var(--ink); margin-bottom: 0.4rem; }
+
+  .mock-otp { display: flex; gap: 0.5rem; padding: 0.4rem 0; }
+  .mock-otp input {
+    width: 44px; height: 50px; text-align: center; font-family: var(--mono);
+    font-size: 1.25rem; font-weight: 600; border: 1px solid #CBD5E1; border-radius: 6px;
+    background: white; color: var(--ink);
+  }
+  .mock-otp input:focus { outline: none; border-color: var(--ink); }
+  .mock-otp.bad input { border-color: #FCA5A5; }
+  .mock-otp.bad input.filled { background: #FEE2E2; }
+
+  .mock-modal {
+    background: white; border-radius: 8px; box-shadow: 0 12px 28px rgba(15,23,42,0.18);
+    padding: 1.4rem 1.5rem; max-width: 100%; border: 1px solid #E2E8F0;
+  }
+  .mock-modal .modal-title { font-family: var(--display); font-size: 1.15rem; font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+  .mock-modal .modal-body  { font-size: 0.92rem; color: var(--ink-soft); margin-bottom: 1rem; line-height: 1.55; }
+  .mock-modal .modal-actions { display: flex; gap: 0.6rem; justify-content: flex-end; }
+  .mock-modal .modal-actions .ghost {
+    background: transparent; color: var(--ink); border: 1px solid #CBD5E1;
+    padding: 0.55rem 1rem; border-radius: 5px; font-size: 0.9rem; cursor: pointer; font-family: var(--body);
+  }
+  .mock-modal.bad .modal-title { color: var(--bad); }
+
+  .mock-captcha {
+    border: 1px solid #CBD5E1; border-radius: 4px; padding: 0.7rem 0.8rem;
+    display: flex; align-items: center; gap: 0.7rem; max-width: 320px;
+    background: #F8FAFC;
+  }
+  .mock-captcha input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--ink); }
+  .mock-captcha .label { flex: 1; font-size: 0.9rem; color: var(--ink); }
+  .mock-captcha .brand {
+    display: flex; flex-direction: column; align-items: center; font-size: 0.62rem;
+    color: var(--muted); line-height: 1.1; gap: 2px; font-family: var(--mono);
+  }
+  .mock-captcha .brand .mark {
+    width: 28px; height: 28px; border-radius: 4px;
+    background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 0.7rem;
+  }
+  .mock-captcha.bad-style {
+    background: #FEE2E2; border: 2px dashed #DC2626; color: #991B1B; font-size: 0.85rem;
+    text-align: center; display: block;
+  }
+  .mock-captcha.bad-style .label { color: #991B1B; font-style: italic; }
+
+  .mock-dropdown {
+    position: relative; padding: 0.55rem 0.85rem; border: 1px solid #CBD5E1; border-radius: 5px;
+    background: white; font-size: 0.95rem; color: var(--ink); cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mock-dropdown .placeholder { color: #94A3B8; }
+  .mock-dropdown .chev { width: 14px; height: 14px; color: var(--muted); }
+  .mock-dropdown.open { border-color: var(--ink); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  .mock-dropdown-list {
+    border: 1px solid var(--ink); border-top: none; background: white;
+    max-height: 220px; overflow-y: auto; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;
+  }
+  .mock-dropdown-list .item { padding: 0.55rem 0.85rem; font-size: 0.93rem; color: var(--ink); cursor: pointer; }
+  .mock-dropdown-list .item:hover, .mock-dropdown-list .item.hover { background: #F1F5F9; }
+  .mock-dropdown-list .item.selected { background: var(--ink); color: white; }
+  .mock-dropdown-list .item.empty { color: var(--muted); font-style: italic; padding: 0.55rem 0.85rem; }
+  .mock-dropdown-list .search-wrap { padding: 0.5rem; border-bottom: 1px solid #E2E8F0; }
+  .mock-dropdown-list .search-wrap input {
+    width: 100%; border: 1px solid #CBD5E1; border-radius: 4px;
+    padding: 0.4rem 0.6rem; font-size: 0.88rem; font-family: var(--body); color: var(--ink);
+  }
+
+  .mock-search-wrap { position: relative; }
+  .mock-search-wrap .search-icon {
+    position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%);
+    width: 16px; height: 16px; color: var(--muted); pointer-events: none;
+  }
+  .mock-search-wrap .mock-input { padding-left: 2.2rem; }
+  .mock-search-results {
+    border: 1px solid var(--ink); border-top: none; background: white;
+    border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; overflow: hidden;
+  }
+  .mock-search-results .result-item {
+    padding: 0.55rem 0.85rem; font-size: 0.92rem; color: var(--ink);
+    border-bottom: 1px solid #F1F5F9; cursor: pointer; display: flex; align-items: center; gap: 0.6rem;
+  }
+  .mock-search-results .result-item:last-child { border-bottom: none; }
+  .mock-search-results .result-item .badge {
+    font-size: 0.7rem; color: var(--muted); font-family: var(--mono); margin-left: auto;
+  }
+  .mock-search-results .empty { padding: 1rem; font-size: 0.9rem; color: var(--muted); text-align: center; font-style: italic; }
+  .mock-search-results mark { background: #FEF3C7; color: var(--ink); padding: 0 2px; border-radius: 2px; }
+
+  .mock-textarea {
+    width: 100%; min-height: 130px; border: 1px solid #CBD5E1; border-radius: 5px;
+    padding: 0.7rem 0.85rem; font-family: var(--body); font-size: 0.95rem; color: var(--ink);
+    resize: vertical; box-sizing: border-box; background: white; line-height: 1.5;
+  }
+  .mock-textarea:focus { outline: none; border-color: var(--ink); }
+  .mock-textarea.error { border-color: var(--bad); background: #FEF2F2; }
+  .mock-textarea-count { display: flex; justify-content: space-between; margin-top: 0.4rem; font-size: 0.78rem; color: var(--muted); }
+  .mock-textarea-count.over { color: var(--bad); font-weight: 600; }
+
+  .mock-tooltip-wrap { position: relative; display: inline-flex; align-items: center; gap: 0.4rem; padding: 1.2rem 0; }
+  .mock-tooltip-wrap .info-icon {
+    width: 16px; height: 16px; border-radius: 50%; background: #94A3B8;
+    color: white; display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 0.7rem; font-weight: 700; cursor: help;
+  }
+  .mock-tooltip {
+    position: absolute; bottom: calc(100% - 0.4rem); left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: white; padding: 0.5rem 0.75rem;
+    font-size: 0.82rem; line-height: 1.4; border-radius: 5px; white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(15,23,42,0.18);
+  }
+  .mock-tooltip::after {
+    content: ""; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%);
+    border-width: 5px 5px 0 5px; border-style: solid; border-color: var(--ink) transparent transparent transparent;
+  }
+  .mock-tooltip.bad-style {
+    background: #DC2626; white-space: normal; max-width: 240px; font-style: italic; opacity: 0.96;
+  }
+  .mock-tooltip.bad-style::after { border-top-color: #DC2626; }
+  .mock-tooltip.cut {
+    left: -120px; transform: none; max-width: none; white-space: nowrap;
+    background: #DC2626;
+  }
+  .mock-tooltip.cut::after { left: 130px; border-top-color: #DC2626; }
+
+  .mock-link {
+    color: #1D4ED8; text-decoration: underline; cursor: pointer; font-weight: 500;
+  }
+  .mock-link:visited { color: #6B21A8; }
+  .mock-link:hover { color: #1E3A8A; }
+  .mock-link.bad-link {
+    color: var(--ink); text-decoration: none;
+  }
+  .mock-link-block { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.8rem 0; line-height: 1.7; }
+
+  .mock-currency {
+    width: 100%; border: 1px solid #CBD5E1; border-radius: 5px;
+    padding: 0.55rem 0.85rem; font-family: var(--mono); font-size: 1.05rem;
+    color: var(--ink); background: white; box-sizing: border-box; text-align: right;
+  }
+  .mock-currency:focus { outline: none; border-color: var(--ink); }
+  .mock-currency.error { border-color: var(--bad); background: #FEF2F2; }
+
+  .mock-pdf {
+    background: white; border: 1px solid #CBD5E1; border-radius: 4px;
+    padding: 0.9rem 1rem; box-shadow: 0 1px 4px rgba(15,23,42,0.06);
+    font-family: var(--body); font-size: 0.83rem; color: var(--ink-soft);
+    line-height: 1.5; position: relative;
+  }
+  .mock-pdf .pdf-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.7rem; padding-bottom: 0.6rem; border-bottom: 1px solid #E2E8F0; }
+  .mock-pdf .pdf-logo {
+    background: var(--ink); color: white; padding: 0.25rem 0.55rem; border-radius: 3px;
+    font-family: var(--display); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.04em;
+  }
+  .mock-pdf .pdf-logo.broken {
+    background: #FEE2E2; color: #DC2626; border: 1px dashed #DC2626;
+    font-style: italic;
+  }
+  .mock-pdf h4 { font-family: var(--display); font-size: 0.92rem; color: var(--ink); margin: 0 0 0.15rem; font-weight: 600; }
+  .mock-pdf .pdf-meta { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+  .mock-pdf .pdf-row { display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dotted #E2E8F0; }
+  .mock-pdf .pdf-row:last-child { border-bottom: none; }
+  .mock-pdf .pdf-foot { display: flex; justify-content: space-between; margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px solid #E2E8F0; font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+  .mock-pdf.bad-pdf .pdf-row.cut { color: var(--bad); }
+  .mock-pdf.bad-pdf::after {
+    content: ""; position: absolute; bottom: 36px; left: 1rem; right: 1rem;
+    height: 1px; background: repeating-linear-gradient(90deg, var(--bad) 0 8px, transparent 8px 14px);
+  }
+
+  .mock-mini-footer {
+    background: var(--ink); color: #CBD5E1; padding: 1rem 1.1rem;
+    border-radius: 4px; font-size: 0.82rem; line-height: 1.6;
+  }
+  .mock-mini-footer .footer-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  .mock-mini-footer h5 { color: white; font-family: var(--display); font-size: 0.9rem; margin: 0 0 0.4rem; font-weight: 600; }
+  .mock-mini-footer a { color: #CBD5E1; text-decoration: none; display: block; padding: 0.15rem 0; }
+  .mock-mini-footer a:hover { color: white; text-decoration: underline; }
+  .mock-mini-footer .copy {
+    border-top: 1px solid #334155; margin-top: 0.8rem; padding-top: 0.6rem;
+    display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.72rem; color: #94A3B8;
+  }
+  .mock-mini-footer.bad-footer { background: white; color: var(--ink); padding: 0.7rem; border: 1px solid #E2E8F0; }
+  .mock-mini-footer.bad-footer h5 { color: var(--ink); }
+  .mock-mini-footer.bad-footer a { color: #1D4ED8; }
+  .mock-mini-footer.bad-footer .copy { border-top: 1px solid #E2E8F0; color: var(--muted); }
+  .mock-mini-footer .socials { display: flex; gap: 0.5rem; margin-top: 0.4rem; }
+  .mock-mini-footer .socials .s {
+    width: 22px; height: 22px; border-radius: 50%; background: #334155; color: white;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 600; font-family: var(--mono);
+  }
+  .mock-mini-footer.bad-footer .socials .s { background: #94A3B8; }
+
+  .mock-suggestion-row {
+    background: #FEF3C7; padding: 0.5rem 0.8rem; font-size: 0.85rem;
+    border-radius: 4px; margin-top: 0.5rem; color: #92400E;
+    border-left: 3px solid var(--warn);
+  }
+  .mock-suggestion-row.success { background: #D1FAE5; color: #065F46; border-left-color: var(--good); }
+
+  </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <!-- <span>Era Infotech BD &nbsp;·&nbsp; SQA Field Guide</span> -->
+      <span>SQA Field Guide</span>
+    </div>
+    <h1 class="hero-title">
+      Bad code, <em>good code</em>.<br>
+      Side by side.
+    </h1>
+    <p class="hero-sub">
+      A visual reference for the basic UI quality checks every developer
+      must clear before sending a build to QA. If the left side ships,
+      the release is denied.
+    </p>
+    <span class="hero-stamp">Release denied if basics fail</span>
+  </div>
+</header>
+
+<!-- ===== STICKY NAV ===== -->
+<nav class="nav-strip">
+  <div class="nav-inner">
+    <span class="nav-label">Sections</span>
+    <div class="nav-links">
+      <a href="#register"><span>01</span>Register</a>
+      <a href="#login"><span>02</span>Login</a>
+      <a href="#email"><span>03</span>Email</a>
+      <a href="#password"><span>04</span>Password</a>
+      <a href="#otp"><span>05</span>OTP</a>
+      <a href="#captcha"><span>06</span>Captcha</a>
+      <a href="#forgot"><span>07</span>Forgot pwd</a>
+      <a href="#buttons"><span>08</span>Buttons</a>
+      <a href="#delete"><span>09</span>Delete Button</a>
+      <a href="#errors"><span>10</span>Errors</a>
+      <a href="#input"><span>11</span>Input field</a>
+      <a href="#mobile"><span>12</span>Mobile Number</a>
+      <a href="#search"><span>13</span>Searching</a>
+      <a href="#dropdown"><span>14</span>Dropdown</a>
+      <a href="#checkbox"><span>15</span>Checkbox</a>
+      <a href="#radio"><span>16</span>Radio</a>
+      <a href="#url"><span>17</span>URL</a>
+      <a href="#textarea"><span>18</span>Text area</a>
+      <a href="#comma"><span>19</span>Currency/Amount</a>
+      <a href="#tooltip"><span>20</span>Tooltip</a>
+      <a href="#links"><span>21</span>Links</a>
+      <a href="#upload"><span>22</span>Upload</a>
+      <a href="#download"><span>23</span>Download</a>
+      <a href="#header"><span>24</span>Header</a>
+      <a href="#footer-sec"><span>25</span>Footer</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================================================
+     SECTION 01 — REGISTER
+     ============================================================ -->
+<section class="section" id="register">
+  <div class="section-head">
+    <div class="section-num">01<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 1 of 25 · registration form</div>
+      <h2 class="section-title">Registration sets the security floor.</h2>
+      <p class="section-lede">Whatever you allow at sign-up, you live with forever. Weak rules now mean weak accounts later.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Email</label>
+            <input class="mock-input" value="user+1@gmail.com">
+            <div class="mock-help error" style="margin-top:0.4rem;">Already used as user@gmail.com — alias trick allowed</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Password</label>
+            <input class="mock-input" type="text" value="123456">
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Confirm password</label>
+            <input class="mock-input" type="text" value="12345">
+            <div class="mock-help error" style="margin-top:0.4rem;">No match check until Submit</div>
+          </div>
+          <button class="mock-btn mock-btn-primary mock-btn-full">Register</button>
+          <div class="mock-help error" style="margin-top:0.6rem;">No CAPTCHA. Bot signups will succeed.</div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>No password complexity — "123456" accepted</li>
+          <li>Confirm-password mismatch only checked on Submit, not on blur</li>
+          <li>Plus-alias trick (user+1@gmail.com) bypasses duplicate-account check</li>
+          <li>No CAPTCHA — registration endpoint is open to bots</li>
+          <li>No email verification step; pro features accessible immediately</li>
+          <li>Spelling errors on the page: "<em>Submitt</em>", "<em>Reigster</em>"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Email</label>
+            <input class="mock-input valid" value="user@gmail.com">
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Password</label>
+            <div class="mock-pwd-wrap">
+              <input class="mock-input" type="password" value="••••••••••••" style="padding-right:2.5rem;">
+              <button class="eye" aria-label="Show password">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 4c-4.5 0-8 6-8 6s3.5 6 8 6 8-6 8-6-3.5-6-8-6Zm0 9.5A3.5 3.5 0 1 1 13.5 10 3.5 3.5 0 0 1 10 13.5Zm0-5.5a2 2 0 1 0 2 2 2 2 0 0 0-2-2Z"/></svg>
+              </button>
+            </div>
+            <div class="mock-strength">
+              <span class="s1"></span><span class="s2"></span><span class="s3"></span><span></span>
+            </div>
+            <div class="mock-help">
+              <span class="success">Strong password</span>
+              <span style="color: var(--muted);">8–16 chars, upper, number, symbol</span>
+            </div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Confirm password</label>
+            <input class="mock-input valid" type="password" value="••••••••••••">
+            <div class="mock-help success" style="margin-top:0.4rem;">Passwords match</div>
+          </div>
+          <div class="mock-captcha" style="margin-top:0.4rem;">
+            <input type="checkbox" checked>
+            <span class="label">I'm not a robot</span>
+            <div class="brand"><div class="mark">G</div>reCAPTCHA</div>
+          </div>
+          <button class="mock-btn mock-btn-primary mock-btn-full" style="margin-top:0.8rem;">Register</button>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Password rules enforced: 8–16 chars, uppercase, number, special character</li>
+          <li>Confirm-password match checked on blur, not just on Submit</li>
+          <li>Plus-alias addresses normalized for duplicate detection</li>
+          <li>CAPTCHA on registration; bot signups blocked</li>
+          <li>Email verification required before pro / restricted features unlock</li>
+          <li>All entered values retained after a validation error (user does not retype)</li>
+          <li>Resend Verification link present and rate-limited (max 5 per hour)</li>
+          <li>All page text reviewed for spelling and grammar before merge</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 02 — LOGIN
+     ============================================================ -->
+<section class="section" id="login">
+  <div class="section-head">
+    <div class="section-num">02<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 2 of 25 · login form</div>
+      <h2 class="section-title">The login form is the front door.</h2>
+      <p class="section-lede">
+        It’s the most-used screen in the product. Every mistake is visible
+        to every user, every day.
+      </p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <!-- BAD -->
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Email</label>
+            <input class="mock-input" value="" placeholder="">
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Password</label>
+            <input class="mock-input" type="text" value="MyPassword123">
+          </div>
+          <div class="mock-checkbox"><input type="checkbox"> Remember me</div>
+          <button class="mock-btn mock-btn-primary mock-btn-full">Login</button>
+          <div style="font-size:0.8rem; color: var(--bad); font-style: italic; margin-top:-0.4rem;">
+            Button enabled with empty email. Password visible.
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Login button is clickable while email is empty</li>
+          <li>Password rendered with <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">type="text"</code> — visible while typing</li>
+          <li>No field-level validation, no caps-lock hint, no error shown</li>
+          <li>Pressing Enter inside the form does nothing</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GOOD -->
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Email</label>
+            <input class="mock-input valid" value="user@gmail.com">
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Password</label>
+            <div class="mock-pwd-wrap">
+              <input class="mock-input" type="password" value="••••••••••" style="padding-right:2.5rem;">
+              <button class="eye" aria-label="Show password">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 4c-4.5 0-8 6-8 6s3.5 6 8 6 8-6 8-6-3.5-6-8-6Zm0 9.5A3.5 3.5 0 1 1 13.5 10 3.5 3.5 0 0 1 10 13.5Zm0-5.5a2 2 0 1 0 2 2 2 2 0 0 0-2-2Z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="mock-checkbox"><input type="checkbox" checked> Remember me</div>
+          <button class="mock-btn mock-btn-primary mock-btn-full">Login</button>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Field-specific errors: <em>“Email is required.”</em> not <em>“Error.”</em></li>
+          <li>Password masked by default; eye icon toggles visibility</li>
+          <li>Login disabled until both fields contain values</li>
+          <li>Enter submits the form; loading state on button while pending</li>
+          <li>HTTPS enforced; rate-limit / CAPTCHA after failed attempts</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 03 — EMAIL
+     ============================================================ -->
+<section class="section" id="email">
+  <div class="section-head">
+    <div class="section-num">03<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 3 of 25 · email field</div>
+      <h2 class="section-title">Email validation, done properly.</h2>
+      <p class="section-lede">
+        Every form has an email field. Every form gets it wrong in the same
+        handful of ways. Whitespace, case, missing TLD checks.
+      </p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Email address</label>
+            <input class="mock-input error" value="  User@Example  " spellcheck="false">
+            <div class="mock-help error">Invalid input</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Email address</label>
+            <input class="mock-input" value="user@example" spellcheck="false">
+            <div class="mock-help">No TLD check — accepted as valid</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Email address</label>
+            <input class="mock-input" value="' OR 1=1 --@x.com" spellcheck="false">
+            <div class="mock-help error">Passes through to the server unsanitized</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Trailing spaces in <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">"User@Example "</code> rejected as invalid</li>
+          <li>Mixed-case email saved as a different user from the lowercase version</li>
+          <li><code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">user@example</code> (no TLD) accepted as valid</li>
+          <li>No <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">type="email"</code>, no <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">inputmode</code>, no autocomplete</li>
+          <li>Generic <em>“Invalid input”</em> error gives no guidance</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Email address</label>
+            <input class="mock-input valid" type="email" value="user@example.com" autocomplete="email" inputmode="email">
+            <div class="mock-help success">Whitespace trimmed automatically · saved lowercase</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Email address</label>
+            <input class="mock-input error" type="email" value="user@example">
+            <div class="mock-help error">Domain must include a top-level domain (e.g. .com)</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Email address</label>
+            <input class="mock-input error" type="email" value="user.name+tag@">
+            <div class="mock-help error">Please enter a valid email address.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Leading/trailing whitespace auto-trimmed before validation</li>
+          <li>Stored as lowercase; comparisons are case-insensitive</li>
+          <li>Reject formats missing <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">@</code>, dot in domain, or with double dots</li>
+          <li>Accept valid local part: <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">+ . - _</code> and digits</li>
+          <li>Specific error messages — <em>“Domain must include a TLD.”</em></li>
+          <li>Server-side sanitized for SQL injection and XSS</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 04 — PASSWORD
+     ============================================================ -->
+<section class="section" id="password">
+  <div class="section-head">
+    <div class="section-num">04<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 4 of 25 · password field</div>
+      <h2 class="section-title">Password security and usability.</h2>
+      <p class="section-lede">
+        The password field carries both security and usability. Both must
+        be solid before release — no exceptions, no shortcuts.
+      </p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Password</label>
+            <input class="mock-input" type="text" value="MyP@ssw0rd!">
+            <div class="mock-help error">type="text" — password is visible while typing</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Confirm password</label>
+            <input class="mock-input" type="text" value="MyP@ssw0rd!">
+          </div>
+          <div class="mock-devtools" aria-hidden="true">
+            <div class="header"><span>POST /api/login</span><span class="net">200 OK</span></div>
+            <div><span class="cmt">// Request payload</span></div>
+            <div>{ <span class="key">"email"</span>: <span class="str">"user@example.com"</span>,</div>
+            <div>&nbsp;&nbsp;<span class="key">"password"</span>: <span class="str">"MyP@ssw0rd!"</span> }</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li><code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">type="text"</code> — password visible on screen and to screen-share</li>
+          <li>Password sent <strong>plaintext</strong> in network request body</li>
+          <li>Visible in <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">localStorage</code>, cookies, browser history</li>
+          <li>No strength indicator on registration or change-password</li>
+          <li>Special characters silently rejected by the form</li>
+          <li>Paste disabled — password managers cannot fill the field</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Password</label>
+            <div class="mock-pwd-wrap">
+              <input class="mock-input" type="password" value="••••••••••" style="padding-right:2.5rem;">
+              <button class="eye" aria-label="Show password">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 4c-4.5 0-8 6-8 6s3.5 6 8 6 8-6 8-6-3.5-6-8-6Zm0 9.5A3.5 3.5 0 1 1 13.5 10 3.5 3.5 0 0 1 10 13.5Zm0-5.5a2 2 0 1 0 2 2 2 2 0 0 0-2-2Z"/></svg>
+              </button>
+            </div>
+            <div class="mock-strength">
+              <span class="s1"></span><span class="s2"></span><span class="s3"></span><span></span>
+            </div>
+            <div class="mock-help success" style="display:flex; justify-content:space-between;">
+              <span>Strong password</span>
+              <span style="color:var(--muted);">12+ chars, upper, number, symbol</span>
+            </div>
+          </div>
+          <div class="mock-devtools" aria-hidden="true">
+            <div class="header"><span>POST /api/login &nbsp; (https)</span><span class="net safe">200 OK</span></div>
+            <div><span class="cmt">// Request payload — sent over TLS</span></div>
+            <div>{ <span class="key">"email"</span>: <span class="str safe">"user@example.com"</span>,</div>
+            <div>&nbsp;&nbsp;<span class="key">"password"</span>: <span class="str safe">"[REDACTED — encrypted in transit]"</span> }</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li><code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">type="password"</code> by default; eye icon toggles visibility</li>
+          <li>Transmitted only over HTTPS; never logged on the server</li>
+          <li>Never stored in localStorage / cookies in plain form</li>
+          <li>Strength meter and rules visible during registration</li>
+          <li>All printable special characters supported</li>
+          <li>Paste (Ctrl+V and right-click) works for password managers</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 05 — OTP
+     ============================================================ -->
+<section class="section" id="otp">
+  <div class="section-head">
+    <div class="section-num">05<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 5 of 25 · one-time password</div>
+      <h2 class="section-title">OTP is a second factor, not a placeholder.</h2>
+      <p class="section-lede">A weak OTP flow defeats the entire purpose of two-factor authentication. Get the basics right or do not ship it.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <label class="mock-label">Enter OTP</label>
+          <input class="mock-input" value="1234" style="font-family:var(--mono); letter-spacing:0.5em;">
+          <div class="mock-help error" style="margin-top:0.4rem;">Length: 4 digits — sometimes 5, sometimes 6</div>
+          <div style="background: #0F172A; border-radius: 4px; padding: 0.7rem 0.85rem; margin-top: 0.7rem; font-family: var(--mono); font-size: 0.78rem; color: #FCA5A5; line-height: 1.5;">
+            GET /api/verify?otp=1234&amp;user=42<br>
+            <span style="color:#94A3B8;">// in URL — leaks to logs, browser history, referrer</span>
+          </div>
+          <div style="background: #0F172A; border-radius: 4px; padding: 0.7rem 0.85rem; margin-top: 0.6rem; font-family: var(--mono); font-size: 0.78rem; color: #FCA5A5; line-height: 1.5;">
+            server.log: "OTP for user 42 = 1234"<br>
+            <span style="color:#94A3B8;">// plaintext in logs</span>
+          </div>
+          <button class="mock-btn mock-btn-primary mock-btn-full" style="margin-top:0.8rem;">Verify</button>
+          <div class="mock-help error" style="margin-top:0.4rem;">No expiry. No attempt limit. Reusable.</div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>OTP length is inconsistent — sometimes 4, sometimes 5, sometimes 6</li>
+          <li>OTP sent in URL query string — appears in logs, browser history, referer headers</li>
+          <li>OTP logged in plaintext on the server</li>
+          <li>No expiry — same code accepted hours later</li>
+          <li>Reusable — same code can verify multiple times</li>
+          <li>No rate limit — brute force succeeds in minutes</li>
+          <li>No "Resend" cooldown — endpoint can be spammed</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <label class="mock-label">Enter the 6-digit code we sent to *****1234</label>
+          <div class="mock-otp">
+            <input value="4" readonly>
+            <input value="9" readonly>
+            <input value="2" readonly>
+            <input value="6" readonly>
+            <input value="8" readonly>
+            <input value="3" readonly>
+          </div>
+          <div class="mock-help success" style="margin-top:0.6rem;">Auto-detected from SMS</div>
+          <div class="mock-help" style="margin-top:0.4rem;">
+            Code expires in <strong>02:14</strong> · <a href="#" class="mock-link" style="font-size:0.85rem;">Resend (4 left)</a>
+          </div>
+          <div style="background: #0F172A; border-radius: 4px; padding: 0.7rem 0.85rem; margin-top:0.7rem; font-family: var(--mono); font-size: 0.78rem; color: #6EE7B7; line-height: 1.5;">
+            POST /api/verify { "otp": "[redacted]" }<br>
+            <span style="color:#94A3B8;">// HTTPS, body-only, never logged</span>
+          </div>
+          <button class="mock-btn mock-btn-primary mock-btn-full" style="margin-top:0.8rem;">Verify</button>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>OTP length is always 6 digits — never less, never more</li>
+          <li>OTP transmitted in HTTPS POST body — never in URL or query string</li>
+          <li>Server logs only request ID and success/failure, never the OTP itself</li>
+          <li>OTP expires after 5 minutes; expired codes always rejected</li>
+          <li>Single-use — second attempt with the same code returns "already used"</li>
+          <li>After 5 failed attempts, OTP is invalidated and user must request a new one</li>
+          <li>Mobile input uses <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">autocomplete="one-time-code"</code> for SMS auto-fill</li>
+          <li>Resend has a cooldown timer; max 5 resends per hour</li>
+          <li>OTP is cryptographically random, not predictable patterns</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 06 — CAPTCHA
+     ============================================================ -->
+<section class="section" id="captcha">
+  <div class="section-head">
+    <div class="section-num">06<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 6 of 25 · bot protection</div>
+      <h2 class="section-title">CAPTCHA is the door, not a decoration.</h2>
+      <p class="section-lede">When CAPTCHA is broken, every protected endpoint is open. It must work on every browser and survive every failure mode.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-captcha bad-style">
+            <span class="label">⚠ CAPTCHA failed to load.<br>Please disable your ad blocker.</span>
+          </div>
+          <div class="mock-help error" style="margin-top:0.6rem;">
+            User cannot proceed. No fallback. No audio option.
+          </div>
+          <div style="background: #0F172A; border-radius: 4px; padding: 0.7rem 0.85rem; margin-top: 0.7rem; font-family: var(--mono); font-size: 0.78rem; color: #FCA5A5; line-height: 1.5;">
+            // client only — server skips verification<br>
+            if (document.getElementById('captcha').style.display === 'none')<br>
+            &nbsp;&nbsp;return submit();
+          </div>
+          <button class="mock-btn mock-btn-primary mock-btn-full" style="margin-top:0.8rem;">Submit</button>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>CAPTCHA fails silently when the user has an ad blocker — no fallback</li>
+          <li>No audio CAPTCHA option — fails accessibility <a href="https://www.google.com/search?q=No+audio+CAPTCHA+option+%E2%80%94+fails+accessibility+%28WCAG+2.1%29&sca_esv=8fdea6dbd6add952&biw=1920&bih=911&sxsrf=ANbL-n7KeSEkIFMtaHkXsdi65veBmIjBBw%3A1777918594436&ei=guL4abGvGpv2seMPytKnyAw&ved=0ahUKEwix-IrynqCUAxUbe2wGHUrpCckQ4dUDCBE&uact=5&oq=No+audio+CAPTCHA+option+%E2%80%94+fails+accessibility+%28WCAG+2.1%29&gs_lp=Egxnd3Mtd2l6LXNlcnAiOk5vIGF1ZGlvIENBUFRDSEEgb3B0aW9uIOKAlCBmYWlscyBhY2Nlc3NpYmlsaXR5IChXQ0FHIDIuMSkyBRAhGJ8FSMO0MVCQsTFYkLExcAF4AJABAJgBpwGgAacBqgEDMC4xuAEDyAEA-AEC-AEBmAICoAKtAcICCBAAGO8FGLADwgILEAAYiQUYogQYsAOYAwCIBgGQBgKSBwMxLjGgB6ACsgcDMC4xuAeqAcIHAzEuMcgHAoAIAQ&sclient=gws-wiz-serp" target="_blank" rel="noopener noreferrer">(WCAG 2.1)</a></li>
+          <li>Verification happens client-side only — DOM manipulation bypasses it</li>
+          <li>Same CAPTCHA challenge served on every page reload</li>
+          <li>No expiry — token from 30 minutes ago still works</li>
+          <li>No IP block after repeated failed attempts</li>
+          <li>On mobile, the challenge popup is cut off and unusable</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <label class="mock-label">Verify you are human</label>
+          <div class="mock-captcha">
+            <input type="checkbox" checked>
+            <span class="label">I'm not a robot</span>
+            <div class="brand"><div class="mark">G</div>reCAPTCHA</div>
+          </div>
+          <div class="mock-help success" style="margin-top:0.6rem;">
+            ✓ Verified · token expires in 02:00
+          </div>
+          <div style="background: #0F172A; border-radius: 4px; padding: 0.7rem 0.85rem; margin-top:0.7rem; font-family: var(--mono); font-size: 0.78rem; color: #6EE7B7; line-height: 1.5;">
+            POST /api/submit<br>
+            { "captchaToken": "03AGd…" }<br>
+            <span style="color:#94A3B8;">// server validates with Google before processing</span>
+          </div>
+          <button class="mock-btn mock-btn-primary mock-btn-full" style="margin-top:0.8rem;">Submit</button>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Server-side verification of token on every submit — not client-only</li>
+          <li>Token is single-use; replay attempts rejected</li>
+          <li>New challenge generated on every page reload and after every failure</li>
+          <li>Token expires after 2 minutes; expired tokens trigger refresh, not error</li>
+          <li>Audio fallback option is present <a href="https://www.w3.org/TR/WCAG21/#info-and-relationships" target="_blank" rel="noopener noreferrer">(WCAG 2.1 compliance)</a></li>
+          <li>Visual contrast preserved for color-blind users</li>
+          <li>IP rate-limit kicks in after repeated failures</li>
+          <li>Tested on mobile + tablet — challenge popup fully visible and tappable</li>
+          <li>Form remains usable when ad blockers are present</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 07 — FORGOT
+     ============================================================ -->
+<section class="section" id="forgot">
+  <div class="section-head">
+    <div class="section-num">07<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 7 of 25 · forgot password flow</div>
+      <h2 class="section-title">Reset is a security boundary, not a form.</h2>
+      <p class="section-lede">A password reset link is an authentication bypass if it leaks. Treat it like one.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Email address</label>
+            <input class="mock-input" value="user@gmail.com">
+          </div>
+          <button class="mock-btn mock-btn-primary mock-btn-full">Submit</button>
+          <div class="mock-help error" style="margin-top:0.6rem;">
+            User entered: notreal@example.com → "No account found. Please register."
+          </div>
+          <div style="margin-top:0.8rem; padding:0.6rem 0.7rem; background:#FEE2E2; border-radius:4px; font-size:0.82rem; color:#991B1B; line-height:1.45;">
+            <strong>Reset link:</strong>
+            <code style="display:block; word-break:break-all; margin-top:0.25rem; background:transparent; color:#991B1B; font-size:0.78rem;">http://app.example.com/reset?token=abc123</code>
+            HTTP, never expires, reusable.
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Reset link uses <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">http://</code> — not HTTPS — so token can be intercepted</li>
+          <li>Token has no expiry; valid forever once issued</li>
+          <li>Token is reusable — clicking the link twice still works</li>
+          <li>Error message reveals whether an email is registered (account enumeration)</li>
+          <li>Old password keeps working after reset; sessions on other devices stay alive</li>
+          <li>No CAPTCHA / rate limit — endpoint can be abused to spam users with reset emails</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Email address</label>
+            <input class="mock-input valid" value="user@gmail.com">
+          </div>
+          <button class="mock-btn mock-btn-primary mock-btn-full">Send reset link</button>
+          <div class="mock-suggestion-row success" style="margin-top:0.7rem;">
+            If an account exists for this email, a reset link has been sent. Please check your inbox.
+          </div>
+          <div style="margin-top:0.8rem; padding:0.6rem 0.7rem; background:#ECFDF5; border-radius:4px; font-size:0.82rem; color:#065F46; line-height:1.45;">
+            <strong>Reset link:</strong>
+            <code style="display:block; word-break:break-all; margin-top:0.25rem; background:transparent; color:#065F46; font-size:0.78rem;">https://app.example.com/reset?token=…</code>
+            HTTPS, single-use, expires in 30 min.
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Reset link uses <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">https://</code> only</li>
+          <li>Token is single-use and expires within 15–30 minutes</li>
+          <li>Same neutral message for valid + invalid emails — no enumeration</li>
+          <li>On successful reset, all active sessions on other devices are logged out</li>
+          <li>Old password is rejected immediately after reset</li>
+          <li>CAPTCHA and IP rate limit applied to prevent reset-email spam</li>
+          <li>Email arrives in inbox (DKIM/SPF/DMARC configured), not spam folder</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 08 — BUTTONS
+     ============================================================ -->
+<section class="section" id="buttons">
+  <div class="section-head">
+    <div class="section-num">08<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 8 of 25 · buttons &amp; actions</div>
+      <h2 class="section-title">Buttons must tell the truth about their state.</h2>
+      <p class="section-lede">
+        A button that lies — clickable when it shouldn’t be, no feedback
+        on click, no confirm on destructive action — corrupts data and
+        frustrates users.
+      </p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form" style="gap:1.4rem;">
+          <div>
+            <div class="mock-label" style="margin-bottom: 0.6rem;">Submit while form invalid</div>
+            <button class="mock-btn mock-btn-primary mock-btn-full">Save changes</button>
+            <div class="mock-help error" style="margin-top: 0.6rem;">
+              Button stays clickable. Double-click sends the request twice.
+            </div>
+          </div>
+          <div>
+            <div class="mock-label" style="margin-bottom: 0.6rem;">Vague action labels</div>
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+              <button class="mock-btn mock-btn-primary">OK</button>
+              <button class="mock-btn mock-btn-primary">Click here</button>
+              <button class="mock-btn mock-btn-primary">Submit</button>
+            </div>
+          </div>
+          <div>
+            <div class="mock-label" style="margin-bottom: 0.6rem;">Destructive action — no confirm</div>
+            <button class="mock-btn mock-btn-danger">Delete account</button>
+            <div class="mock-help error" style="margin-top: 0.6rem;">
+              Fires immediately. No confirmation dialog, no undo.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Submit clickable while form is invalid</li>
+          <li>Double-click submits the form twice → duplicate records</li>
+          <li>No loading state — user clicks again thinking nothing happened</li>
+          <li>Only the text is clickable, not the surrounding button area</li>
+          <li>Delete fires immediately with no confirmation dialog</li>
+          <li>Labels say <em>“OK”</em> or <em>“Click here”</em> instead of the action</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form" style="gap:1.4rem;">
+          <div>
+            <div class="mock-label" style="margin-bottom: 0.6rem;">Disabled while form invalid</div>
+            <button class="mock-btn mock-btn-disabled mock-btn-full" disabled>Save changes</button>
+            <div class="mock-help" style="margin-top: 0.6rem;">
+              Disabled until all required fields are valid.
+            </div>
+          </div>
+          <div>
+            <div class="mock-label" style="margin-bottom: 0.6rem;">Loading state during async work</div>
+            <button class="mock-btn mock-btn-loading mock-btn-full">
+              <span class="mock-spinner"></span> Saving…
+            </button>
+            <div class="mock-help" style="margin-top: 0.6rem;">
+              Button disabled during request. Spinner shows progress.
+            </div>
+          </div>
+          <div>
+            <div class="mock-label" style="margin-bottom: 0.6rem;">Specific labels &amp; safe destructive</div>
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+              <button class="mock-btn mock-btn-primary">Save changes</button>
+              <button class="mock-btn mock-btn-primary" style="background:white; color:var(--ink); border:1px solid var(--line);">Cancel</button>
+              <button class="mock-btn mock-btn-danger">Delete user…</button>
+            </div>
+            <div class="mock-help success" style="margin-top: 0.6rem;">
+              Trailing “…” indicates a confirm dialog will appear.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Disabled (greyed) while required fields are empty/invalid</li>
+          <li>Disabled on click + spinner shown until response returns</li>
+          <li>Whole button area is clickable, with hover state on the area</li>
+          <li>Destructive actions show a confirm dialog naming the item</li>
+          <li>Text describes the action: <em>“Save changes”</em>, <em>“Delete user”</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 09 — DELETE
+     ============================================================ -->
+<section class="section" id="delete">
+  <div class="section-head">
+    <div class="section-num">09<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 9 of 25 · destructive actions</div>
+      <h2 class="section-title">Delete cannot be a single click.</h2>
+      <p class="section-lede">Every "Are you sure?" you skip is a support ticket waiting to happen — sometimes a lawsuit.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <button class="mock-btn mock-btn-danger" style="width:auto;">Delete</button>
+          <div class="mock-help error" style="margin-top:0.5rem;">
+            Single click → record gone. No confirm. No undo. No log.
+          </div>
+          <div style="background: #0F172A; border-radius: 4px; padding: 0.7rem 0.85rem; margin-top: 0.8rem; font-family: var(--mono); font-size: 0.78rem; color: #FCA5A5; line-height: 1.5;">
+            DELETE /api/records/4271<br>
+            <span style="color:#94A3B8;">// hard delete · no audit log · no permission check</span>
+          </div>
+          <div style="background: #FEE2E2; padding: 0.6rem 0.7rem; border-radius:4px; margin-top:0.6rem; font-size:0.85rem; color:#991B1B;">
+            Children rows orphaned in the database. Foreign keys broken.
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Single click deletes immediately — no confirmation</li>
+          <li>No undo, no recovery — destructive and silent</li>
+          <li>Hard delete; no soft-delete flag, no audit log</li>
+          <li>No RBAC check — any user can delete any record</li>
+          <li>Cascade rules undefined — child rows orphan in the database. <a href="https://www.google.com/search?q=XSS+open+and+close+meaning&sca_esv=8fdea6dbd6add952&biw=1920&bih=911&sxsrf=ANbL-n7j5Pq5Ut-8r9CoSao4nybYf1okdQ%3A1777918394554&ei=uuH4aYTIIZGbseMPjvPFeQ&ved=0ahUKEwiEjeOSnqCUAxWRTWwGHY55MQ8Q4dUDCBE&uact=5&oq=XSS+open+and+close+meaning&gs_lp=Egxnd3Mtd2l6LXNlcnAiGlhTUyBvcGVuIGFuZCBjbG9zZSBtZWFuaW5nMgUQIRigATIFECEYoAEyBRAhGKABSJVpUABYhmdwAHgAkAEAmAGgAaAB2hGqAQQxLjE5uAEDyAEA-AEBmAILoAL6CcICBRAAGO8FwgIEECEYCsICBBAhGBXCAgcQIRgKGKABmAMAkgcEMC4xMaAH7iCyBwQwLjExuAf6CcIHAzUuNsgHCoAIAQ&sclient=gws-wiz-serp" target="_blank" rel="noopener noreferrer">Example</a></li>
+          <li>No success message — user is not sure if anything happened</li>
+          <li>Bulk delete deletes everything when nothing is selected</li>
+          <li>Delete keyboard shortcut wipes records without warning</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-modal">
+          <div class="modal-title">Delete provider "Acme Routing"?</div>
+          <div class="modal-body">
+            This will deactivate the provider and disable <strong>3 active routes</strong> attached to it.
+            You will be able to restore this within 30 days.
+          </div>
+          <div class="modal-actions">
+            <button class="ghost">Cancel</button>
+            <button class="mock-btn mock-btn-danger" style="width:auto;">Yes, delete</button>
+          </div>
+        </div>
+        <div class="mock-help success" style="margin-top:0.7rem;">
+          Toast: Deleted. <a href="#" class="mock-link" style="font-size:0.85rem;">Undo</a> · 8s
+        </div>
+        <div style="background: #0F172A; border-radius: 4px; padding: 0.7rem 0.85rem; margin-top:0.7rem; font-family: var(--mono); font-size: 0.78rem; color: #6EE7B7; line-height: 1.5;">
+          POST /api/records/4271/delete<br>
+          <span style="color:#94A3B8;">// soft delete + audit log + RBAC enforced</span>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Confirmation modal names the record and the consequences explicitly</li>
+          <li>Cancel + Confirm clearly distinguished; destructive action is the non-default</li>
+          <li>Esc dismisses, Tab cycles between buttons; modal is keyboard-accessible</li>
+          <li>Soft delete by default; restorable within a documented window (e.g. 30 days)</li>
+          <li>Undo toast appears for ~8 seconds after deletion</li>
+          <li>Bulk delete confirmation states the exact count: "Delete 5 records?"</li>
+          <li>RBAC enforced server-side — direct API calls without permission return 403</li>
+          <li>Audit log records user, timestamp, IP, record ID</li>
+          <li>Cascade behavior matches business rules — block, set null, or cascade — never silent orphans</li>
+          <li>Touch-friendly on mobile; modal readable without scrolling</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 10 — ERRORS
+     ============================================================ -->
+<section class="section" id="errors">
+  <div class="section-head">
+    <div class="section-num">10<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 10 of 25 · error messages</div>
+      <h2 class="section-title">Error messages are part of the product.</h2>
+      <p class="section-lede">
+        If your error message has a typo, the user assumes the whole
+        product has typos. Specific, correct, and visible — every time.
+      </p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-toast">
+            <strong>Error occurred.</strong> Plese try agian.
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Email</label>
+            <input class="mock-input error" value="abc">
+            <div class="mock-help error">Invalid input</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Mobile number</label>
+            <input class="mock-input error" value="01234">
+            <div class="mock-help error">Wrong</div>
+          </div>
+          <div class="mock-devtools">
+            <div class="header"><span>500 Internal Server Error</span><span class="net">stack trace</span></div>
+            <div><span class="str">java.lang.NullPointerException</span></div>
+            <div>&nbsp;&nbsp;at com.era.mw.UserSvc.<span class="key">getProvider</span>(UserSvc.java:142)</div>
+            <div>&nbsp;&nbsp;at com.era.mw.controller...</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Spelling and grammar mistakes — <em>“Plese”</em>, <em>“agian”</em></li>
+          <li>Server stack trace shown in production UI</li>
+          <li>Generic <em>“Wrong”</em> / <em>“Invalid input”</em> across every field</li>
+          <li>Error toasts disappear in 1 second before user can read</li>
+          <li>Position shifts the form layout when the error appears</li>
+          <li>No 500 page — blank white screen on server error</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-toast" style="background: #FEF3C7; border-left-color: var(--warn); color: #78350F;">
+            <strong>Couldn’t save.</strong> The server is taking longer than usual. We’ve been notified — please try again.
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Email</label>
+            <input class="mock-input error" value="abc">
+            <div class="mock-help error">Please enter a valid email address (e.g. you@company.com).</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Mobile number</label>
+            <input class="mock-input error" value="01234">
+            <div class="mock-help error">Mobile number must be 11 digits, starting with 01.</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Reference ID for support</label>
+            <div class="mock-help">Error ID: <code style="font-family:var(--mono); background:#F1F5F9; padding:1px 6px; border-radius:3px;">ERR-7F3A-2026-05-01</code></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Spelling and grammar reviewed before merge</li>
+          <li>User-friendly server errors with a request / error ID</li>
+          <li>Error stays visible until corrected or dismissed</li>
+          <li>Reserved space prevents layout shift when error appears</li>
+          <li>Field-specific text: <em>“Mobile number must be 11 digits.”</em></li>
+          <li>Branded 500 / 404 pages with a recovery CTA</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 11 — INPUT
+     ============================================================ -->
+<section class="section" id="input">
+  <div class="section-head">
+    <div class="section-num">11<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 11 of 25 · single-line text input</div>
+      <h2 class="section-title">An input field is the smallest contract.</h2>
+      <p class="section-lede">
+        Almost every form is a stack of single-line inputs. Validation,
+        sanitization, character handling — get any of them wrong and the
+        whole form is unsafe.
+      </p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <!-- BAD -->
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Full name</label>
+            <input class="mock-input" value="&lt;b&gt;O'Connor&lt;/b&gt;' OR '1'='1   ">
+          </div>
+          <div class="mock-help error" style="margin-top:0.4rem;">
+            No max-length · No trim · HTML / SQL accepted raw · No live validation
+          </div>
+          <div style="margin-top:0.6rem; padding:0.6rem 0.7rem; background:#FEE2E2; border-radius:4px; font-size:0.82rem; color:#991B1B; line-height:1.45;">
+            <strong>What gets saved:</strong>
+            <code style="display:block; word-break:break-all; margin-top:0.25rem; background:transparent; color:#991B1B; font-size:0.78rem;">"&lt;b&gt;O'Connor&lt;/b&gt;' OR '1'='1   "</code>
+            Bold tag renders on the read view · injection succeeds in the query.
+          </div>
+          <div class="mock-row" style="margin-top:0.7rem;">
+            <label class="mock-label">City</label>
+            <input class="mock-input" value="???? ???? ???">
+            <div class="mock-help error" style="margin-top:0.3rem;">
+              User typed <em>"ঢাকা"</em> — DB charset is latin1, stored as ????
+            </div>
+          </div>
+          <div class="mock-row" style="margin-top:0.7rem;">
+            <label class="mock-label" style="color:#94A3B8;">Reference code (disabled)</label>
+            <input class="mock-input" value="XYZ-99" style="opacity:1;">
+            <div class="mock-help error" style="margin-top:0.3rem;">
+              Looks identical to enabled — user types into a frozen field
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Empty field accepted; required-field validation never runs</li>
+          <li>Leading and trailing spaces stored as-is — <em>"Iqbal "</em> ≠ <em>"Iqbal"</em> in lookups</li>
+          <li>HTML tags rendered raw on the read view — XSS open</li>
+          <li>SQL injection (<code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">' OR '1'='1</code>) accepted unsanitized. <a href="https://www.google.com/search?q=SQL+injection+%28%27+OR+%271%27%3D%271%29+accepted+unsanitized&sca_esv=8fdea6dbd6add952&biw=1920&bih=911&sxsrf=ANbL-n42W3U52HnInQSkjPGgq86vrK22rA%3A1777918491221&ei=G-L4aZeYDb2fseMPhtDPsQc&ved=0ahUKEwjXke_AnqCUAxW9T2wGHQboM3YQ4dUDCBE&uact=5&oq=SQL+injection+%28%27+OR+%271%27%3D%271%29+accepted+unsanitized&gs_lp=Egxnd3Mtd2l6LXNlcnAiMFNRTCBpbmplY3Rpb24gKCcgT1IgJzEnPScxKSBhY2NlcHRlZCB1bnNhbml0aXplZDIFEAAY7wUyBRAAGO8FMggQABiJBRiiBEi0CVCaBliaBnABeAGQAQCYAbMBoAGzAaoBAzAuMbgBA8gBAPgBAvgBAZgCAqACvAHCAgoQABhHGNYEGLADwgIOEAAY5AIY1gQYsAPYAQHCAhcQLhjcBhi4BhjaBhjYAhjIAxiwA9gBAZgDAIgGAZAGDboGBggBEAEYCZIHAzEuMaAH5QKyBwMwLjG4B7UBwgcFMC4xLjHIBweACAE&sclient=gws-wiz-serp" target="_blank" rel="noopener noreferrer">Example</a></li>
+          <li>No max-length cap — 50,000-character paste breaks the database</li>
+          <li>Emoji and Bangla text become <em>???</em> (latin1 charset, not utf8mb4)</li>
+          <li>Names with apostrophe ("O'Connor") or dot ("Md. Iqbal") rejected as invalid</li>
+          <li>Validation only fires on Submit — user finds errors at the bottom of the form</li>
+          <li>Disabled / readonly fields look identical to enabled — user types into a frozen field</li>
+          <li>Pasted text carries over font / color / links from the source application</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GOOD -->
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Full name <span style="color: var(--bad);">*</span></label>
+            <input class="mock-input valid" value="Mohammad Iqbal Hossain" placeholder="e.g. Mohammad Iqbal Hossain">
+          </div>
+          <div class="mock-textarea-count" style="margin-top:0.4rem;">
+            <span>Letters · spaces · hyphen · apostrophe · dot</span>
+            <span>22 / 100 chars</span>
+          </div>
+          <div class="mock-help success" style="margin-top:0.4rem;">
+            Validated on blur · trimmed · max-length enforced
+          </div>
+          <div style="margin-top:0.6rem; padding:0.6rem 0.7rem; background:#ECFDF5; border-radius:4px; font-size:0.82rem; color:#065F46; line-height:1.45;">
+            <strong>Stored:</strong>
+            <code style="background:transparent; color:#065F46; font-size:0.85em;">"Mohammad Iqbal Hossain"</code>
+            · escaped on render · parameterized SQL
+          </div>
+          <div class="mock-row" style="margin-top:0.7rem;">
+            <label class="mock-label">City</label>
+            <input class="mock-input valid" value="ঢাকা">
+            <div class="mock-help success" style="margin-top:0.3rem;">
+              utf8mb4 charset — Bangla, emoji, mixed-language preserved
+            </div>
+          </div>
+          <div class="mock-row" style="margin-top:0.7rem;">
+            <label class="mock-label" style="color:#94A3B8;">Reference code (disabled)</label>
+            <input class="mock-input" value="XYZ-99" style="background:#F1F5F9; color:#94A3B8; cursor:not-allowed;" disabled>
+            <div class="mock-help success" style="margin-top:0.3rem;">
+              Greyed out · no focus ring on Tab · clearly non-editable
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Required field shows specific error on blur, not just on Submit</li>
+          <li>Whitespace trimmed; multiple inner spaces normalized to one</li>
+          <li>HTML escaped on render (XSS-safe); SQL queries parameterized server-side</li>
+          <li>Max-length enforced at field + DB level; live counter visible to user</li>
+          <li>utf8mb4 charset — Bangla, emoji, mixed-language all preserved without corruption</li>
+          <li>Allowed characters documented per field; "O'Connor", "Md. Iqbal", "Abdul-Karim" all accepted</li>
+          <li>Specific validation per case — format error ≠ length error ≠ required error</li>
+          <li>Disabled / readonly fields visually distinct (greyed; no focus ring on Tab)</li>
+          <li>Standard shortcuts (Ctrl/Cmd + C/V/X/Z/A) and Tab / Enter work cross-browser</li>
+          <li>Pasted text normalized to plain before storing; mobile keyboard type appropriate</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 12 — MOBILE
+     ============================================================ -->
+<section class="section" id="mobile">
+  <div class="section-head">
+    <div class="section-num">12<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 12 of 25 · mobile number field</div>
+      <h2 class="section-title">Specific input types need specific rules.</h2>
+      <p class="section-lede">
+        Generic text inputs are not acceptable for phone numbers. Country
+        code, format, and length all matter.
+      </p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Mobile number</label>
+            <div class="mock-phone-row no-country">
+              <input class="mock-input error" value="abc-123-XYZ" placeholder="">
+            </div>
+            <div class="mock-help error">Accepts letters, special characters, anything</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Mobile number</label>
+            <div class="mock-phone-row no-country">
+              <input class="mock-input" value="017xxxxxxxx">
+            </div>
+            <div class="mock-help">Stored as plain string — country can’t be looked up</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Mobile number (max length 50)</label>
+            <div class="mock-phone-row no-country">
+              <input class="mock-input" value="01711111111111111111111111">
+            </div>
+            <div class="mock-help error">No length validation — accepts anything</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Field accepts letters and special characters as input</li>
+          <li>Saved without country code — international lookup fails</li>
+          <li>No length validation; users enter 25-digit numbers</li>
+          <li>Generic <em>“Wrong”</em> error gives no guidance on format</li>
+          <li>Mobile keyboard does not switch to numeric layout</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Mobile number</label>
+            <div class="mock-phone-row">
+              <span class="country">
+                <span class="flag" aria-hidden="true"></span>+880
+              </span>
+              <input class="mock-input valid" value="1711-123456" inputmode="tel">
+            </div>
+            <div class="mock-help success">Stored as +8801711123456 (E.164 format)</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Mobile number</label>
+            <div class="mock-phone-row">
+              <span class="country">
+                <span class="flag" aria-hidden="true"></span>+880
+              </span>
+              <input class="mock-input error" value="1711" inputmode="tel">
+            </div>
+            <div class="mock-help error">Bangladesh numbers must be 10 digits after the country code.</div>
+          </div>
+          <div class="mock-row">
+            <label class="mock-label">Mobile number</label>
+            <div class="mock-phone-row">
+              <span class="country">
+                <span class="flag" aria-hidden="true"></span>+880
+              </span>
+              <input class="mock-input error" value="abc" inputmode="tel">
+            </div>
+            <div class="mock-help error">Only digits are allowed in this field.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Digits only — letters and special characters blocked</li>
+          <li>Country dropdown with flags; defaults to user’s country</li>
+          <li>Length validation matches selected country</li>
+          <li>Stored in E.164 international format (<code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">+8801711…</code>)</li>
+          <li>Field-specific errors with the actual rule</li>
+          <li>Mobile keyboard shows numeric layout via <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">inputmode="tel"</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 13 — SEARCH
+     ============================================================ -->
+<section class="section" id="search">
+  <div class="section-head">
+    <div class="section-num">13<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 13 of 25 · search field</div>
+      <h2 class="section-title">Search is a feature, not a text box.</h2>
+      <p class="section-lede">Users judge the entire product by how the search behaves. Placeholder, results, empty state — all of it must be designed.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-search-wrap">
+            <input class="mock-input" value="provider" placeholder="">
+          </div>
+          <div class="mock-help error" style="margin-top:0.4rem;">
+            No icon. No placeholder. Hit Enter — nothing happens.
+          </div>
+          <div style="margin-top:0.7rem; border:1px solid #FCA5A5; border-radius:5px; padding:0.7rem 0.85rem; background:#FEF2F2; color:#991B1B; font-size:0.88rem;">
+            <strong>Wrong</strong> — error on no results
+          </div>
+          <div style="margin-top:0.6rem; background:#0F172A; border-radius:4px; padding:0.7rem 0.85rem; font-family:var(--mono); font-size:0.78rem; color:#FCA5A5; line-height:1.5;">
+            GET /search?q=&lt;script&gt;alert(1)&lt;/script&gt;<br>
+            <span style="color:#94A3B8;">// rendered raw on results page</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>No search icon, no placeholder text — field looks like any other input</li>
+          <li>Pressing Enter does not trigger search — must click button</li>
+          <li>Empty state shows just "Wrong" — no helpful message, no suggestions</li>
+          <li>No loader while results are fetching — page appears frozen</li>
+          <li>XSS not sanitized — <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">&lt;script&gt;</code> in query renders as code on results page. <a href="https://www.google.com/search?q=XSS+not+sanitized+%E2%80%94+%3Cscript%3E+in+query+renders+as+code+on+results+page&sca_esv=8fdea6dbd6add952&biw=1920&bih=911&sxsrf=ANbL-n4dB1eZG5XqLZ0X5k9jZ6RpCVi8wg%3A1777918746351&ei=GuP4adSTFdmYjuMPv93wkAg&ved=0ahUKEwjUiMO6n6CUAxVZjGMGHb8uHIIQ4dUDCBE&uact=5&oq=XSS+not+sanitized+%E2%80%94+%3Cscript%3E+in+query+renders+as+code+on+results+page&gs_lp=Egxnd3Mtd2l6LXNlcnAiR1hTUyBub3Qgc2FuaXRpemVkIOKAlCA8c2NyaXB0PiBpbiBxdWVyeSByZW5kZXJzIGFzIGNvZGUgb24gcmVzdWx0cyBwYWdlSMgGUOsDWOsDcAF4AJABAJgBd6ABd6oBAzAuMbgBA8gBAPgBAfgBApgCAaACBKgCFMICBxAjGOoCGCfCAg0QIxieBhjwBRjqAhgnwgIQEAAYAxiPARjqAhi0AtgBAcICEBAuGAMYjwEY6gIYtALYAQGYAwTxBYubnd-tP31BugYGCAEQARgKkgcBMaAHY7IHALgHAMIHAzItMcgHBIAIAQ&sclient=gws-wiz-serp" target="_blank" rel="noopener noreferrer">Example</a></li>
+          <li>No SQL parameterization — single-quote in query throws DB error to user</li>
+          <li>No autocomplete or related keywords</li>
+          <li>Pagination breaks past page 3</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-search-wrap">
+            <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a7 7 0 1 0 4.193 12.59l3.857 3.857a1 1 0 0 0 1.414-1.414l-3.857-3.857A7 7 0 0 0 9 2Zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z"/></svg>
+            <input class="mock-input" value="prov" placeholder="Search providers, routes, organizations…">
+          </div>
+          <div class="mock-search-results" style="border-color: var(--ink); margin-top:-1px;">
+            <div class="result-item"><strong><mark>Prov</mark>ider</strong> setup<span class="badge">in Middleware</span></div>
+            <div class="result-item"><strong><mark>Prov</mark>ider</strong> credentials<span class="badge">in Middleware</span></div>
+            <div class="result-item"><strong><mark>Prov</mark>isioning</strong> rules<span class="badge">in Routes</span></div>
+            <div class="result-item" style="color:var(--muted); font-style:italic;">3 of 12 results · view all →</div>
+          </div>
+          <div class="mock-help success" style="margin-top:0.6rem;">
+            Suggestions update as you type · 187ms
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Magnifying-glass icon visible inside the field; placeholder reads <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">Search providers, routes…</code></li>
+          <li>Pressing Enter or clicking Search both trigger the query</li>
+          <li>Suggestions appear as the user types (autocomplete with highlighted match)</li>
+          <li>Loader/spinner appears if results take > 200ms</li>
+          <li>Empty state shows clear "No results found" message + related keywords</li>
+          <li>XSS sanitized — query rendered as plain text on results page</li>
+          <li>SQL inputs are parameterized; no DB errors leak to the UI</li>
+          <li>Pagination tested through last page; results count is accurate</li>
+          <li>Newly indexed items become searchable within the documented SLA</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 14 — DROPDOWN
+     ============================================================ -->
+<section class="section" id="dropdown">
+  <div class="section-head">
+    <div class="section-num">14<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 14 of 25 · select / combobox</div>
+      <h2 class="section-title">A dropdown is a list, not a guess.</h2>
+      <p class="section-lede">Every dropdown is data: ordered, complete, scrollable. Skip the basics and the form silently breaks.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Country</label>
+            <div class="mock-dropdown open">
+              <span>Bangaldesh</span>
+              <svg class="chev" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+            </div>
+            <div class="mock-dropdown-list">
+              <div class="item">Bangaldesh</div>
+              <div class="item">India</div>
+              <div class="item"></div>
+              <div class="item">Pakistan</div>
+              <div class="item">srilanka</div>
+              <div class="item">Bhutan</div>
+              <div class="item">Bangaldesh</div>
+            </div>
+          </div>
+          <div style="margin-top:1rem; padding-top:0.9rem; border-top:1px dashed #FCA5A5;">
+            <label class="mock-label" style="font-size:0.78rem; color:var(--bad);">Long-value truncation (separate field)</label>
+            <div class="mock-row">
+              <label class="mock-label">Provider region</label>
+              <div class="mock-dropdown" style="max-width: 220px;">
+                <span style="overflow:hidden; white-space:nowrap; display:inline-block; max-width:160px;">Bangladesh — South Re</span>
+                <svg class="chev" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+              </div>
+              <div class="mock-help error" style="margin-top:0.4rem;">
+                Selected value is "Bangladesh — South Region (Provider 12, Acme Routing)". Field shows only the first ~22 characters. No ellipsis, no tooltip, no clue that text was hidden.
+              </div>
+            </div>
+          </div>
+          <div class="mock-help error" style="margin-top:0.5rem;">Spelling, casing, duplicates, blank row.</div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Misspelled value — "Bangaldesh" — present and selected by default</li>
+          <li>Casing inconsistent — "srilanka" lowercase, others Title Case</li>
+          <li>Blank/empty option in the middle of the list</li>
+          <li>Duplicate entries — Bangladesh appears twice</li>
+          <li>Order looks random — neither alphabetical nor by population</li>
+          <li>Dropdown does not open with keyboard or first-letter typing</li>
+          <li>Long values overflow and break the dropdown width</li>
+          <li>No hover state — user cannot see which item is highlighted</li>
+          <li>Long selected value cut off because the field is too narrow — no ellipsis, no tooltip, the full text is silently hidden</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-row">
+            <label class="mock-label">Country</label>
+            <div class="mock-dropdown open">
+              <span>Bangladesh</span>
+              <svg class="chev" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+            </div>
+            <div class="mock-dropdown-list">
+              <div class="search-wrap">
+                <input value="ban" placeholder="Search…">
+              </div>
+              <div class="item selected">Bangladesh</div>
+              <div class="item hover">Bahrain</div>
+              <div class="item">Barbados</div>
+              <div class="item">Belarus</div>
+              <div class="item">Belgium</div>
+              <div class="item">Belize</div>
+            </div>
+          </div>
+          <div style="margin-top:1rem; padding-top:0.9rem; border-top:1px dashed var(--good);">
+            <label class="mock-label" style="font-size:0.78rem; color:var(--good);">Long-value truncation (separate field)</label>
+            <div class="mock-row">
+              <label class="mock-label">Provider region</label>
+              <div class="mock-tooltip-wrap" style="display:block; padding:0;">
+                <div class="mock-tooltip" style="white-space:normal; max-width:260px; left:auto; right:0; transform:none; bottom:calc(100% + 6px);">
+                  Bangladesh — South Region (Provider 12, Acme Routing)
+                </div>
+                <div class="mock-dropdown" style="max-width: 220px;">
+                  <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:inline-block; max-width:160px;">Bangladesh — South Region (Provider 12, Acme Routing)</span>
+                  <svg class="chev" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+                </div>
+              </div>
+              <div class="mock-help success" style="margin-top:0.4rem;">
+                Truncates with "…" and shows the full value on hover (and via screen-reader title attribute).
+              </div>
+            </div>
+          </div>
+          <div class="mock-help success" style="margin-top:0.5rem;">Filtered. Real-time. Keyboard-accessible.</div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>All values present per the spec — none missing or extra</li>
+          <li>Spellings reviewed; consistent Title Case</li>
+          <li>No blank options (except an explicit "Select an option" placeholder if intended)</li>
+          <li>Order matches the spec (alphabetical, popularity, etc.)</li>
+          <li>Default value is the documented default, not a random first item</li>
+          <li>Long values truncate cleanly with ellipsis or wrap — never break the layout</li>
+          <li>Hover state on every item; focused item visually highlighted</li>
+          <li>Tab-able, arrow-key navigable, type-to-jump enabled</li>
+          <li>Built-in search filter for long lists (countries, providers)</li>
+          <li>Cross-browser parity — Chrome / Firefox / Safari / Edge tested</li>
+          <li>Long selected values truncate with an ellipsis and reveal the full text on hover (and to screen readers via <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">title</code> / <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">aria-label</code>) — never silently hidden</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 15 — CHECKBOX
+     ============================================================ -->
+<section class="section" id="checkbox">
+  <div class="section-head">
+    <div class="section-num">15<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 15 of 25 · checkbox</div>
+      <h2 class="section-title">Checkboxes are not just style — they are state.</h2>
+      <p class="section-lede">Misalignment, missing labels, broken keyboard support — all of these silently produce wrong data.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div style="padding: 0.4rem 0;">
+            <input type="checkbox" style="vertical-align:top;"> Send promotional emails
+          </div>
+          <div style="padding: 0.4rem 0;">
+            <input type="checkbox" checked>I agree to the trems &amp; conditons
+          </div>
+          <div style="padding: 0.4rem 0;">
+            <input type="checkbox">
+          </div>
+          <div style="padding: 0.4rem 0;">
+            <input type="checkbox"> Receive offers
+          </div>
+          <div style="padding: 0.4rem 0;">
+            <input type="checkbox"> Receive offers
+          </div>
+          <div class="mock-help error" style="margin-top:0.5rem;">
+            Label misaligned · spelling errors · missing label · duplicates
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Label vertically misaligned with the checkbox</li>
+          <li>Clicking the label text does not toggle the checkbox (no for/id link)</li>
+          <li>Spelling errors — "trems &amp; conditons"</li>
+          <li>Checkbox with no visible label — only the developer knows what it does</li>
+          <li>Duplicate label texts — "Receive offers" appears twice</li>
+          <li>No keyboard support — Space key does not toggle</li>
+          <li>No focus ring — keyboard users cannot tell what is focused</li>
+          <li>On mobile, tap target is smaller than 44×44 px</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <label class="mock-checkbox" style="cursor:pointer;">
+            <input type="checkbox" checked>
+            Send me product updates and release notes
+          </label>
+          <label class="mock-checkbox" style="cursor:pointer;">
+            <input type="checkbox">
+            Send me promotional offers from partners
+          </label>
+          <label class="mock-checkbox" style="cursor:pointer;">
+            <input type="checkbox" checked>
+            I agree to the <a href="#" class="mock-link" style="font-size:0.95rem;">Terms &amp; Conditions</a>
+          </label>
+          <label class="mock-checkbox" style="cursor:pointer;">
+            <input type="checkbox">
+            I agree to the <a href="#" class="mock-link" style="font-size:0.95rem;">Privacy Policy</a>
+          </label>
+          <div class="mock-help success" style="margin-top:0.5rem;">
+            Tab focusable · Space toggles · Label clicks toggle · 44px tap target
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Each checkbox has a clear, distinct label linked via <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">for</code>/<code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">id</code></li>
+          <li>Clicking the label text toggles the checkbox</li>
+          <li>Spelling reviewed — no typos</li>
+          <li>No duplicate labels in the same group</li>
+          <li>Order matches the spec exactly</li>
+          <li>Visible focus ring when tabbed-to from the keyboard</li>
+          <li>Space key toggles the focused checkbox</li>
+          <li>Touch target ≥ 44×44 px on mobile</li>
+          <li>Validation: if at least one is required, error reads "Please select at least one option."</li>
+          <li>Selection is retained after a form validation error — user does not re-tick</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 16 — RADIO
+     ============================================================ -->
+<section class="section" id="radio">
+  <div class="section-head">
+    <div class="section-num">16<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 16 of 25 · radio button</div>
+      <h2 class="section-title">Only one. Always one. Visibly one.</h2>
+      <p class="section-lede">Radio buttons promise mutual exclusion. Break that promise and the form is meaningless.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div style="font-size:0.85rem; color:var(--ink); font-weight:600; margin-bottom:0.4rem;">Plan</div>
+          <div style="padding: 0.4rem 0;">
+            <input type="radio" name="bad-plan-1" checked> Free
+          </div>
+          <div style="padding: 0.4rem 0;">
+            <input type="radio" name="bad-plan-2" checked> Pro
+          </div>
+          <div style="padding: 0.4rem 0;">
+            <input type="radio" name="bad-plan-3"> Enterpise
+          </div>
+          <div class="mock-help error" style="margin-top:0.5rem;">
+            Different name attributes — both Free and Pro selected simultaneously.
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li><code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">name</code> attributes differ across options — multiple radios selectable at once</li>
+          <li>Spelling error — "Enterpise"</li>
+          <li>Order does not match the spec (should be Free → Pro → Enterprise)</li>
+          <li>Clicking the label text does not select the radio</li>
+          <li>No visible focus indicator when navigated by keyboard</li>
+          <li>Arrow keys do not move selection within the group</li>
+          <li>Selection lost on validation error — user has to re-pick</li>
+          <li>On mobile, tap area is too small to hit accurately</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-radio-group">
+            <div class="group-label">Plan</div>
+            <label class="mock-radio" style="cursor:pointer;">
+              <input type="radio" name="good-plan"> Free
+            </label>
+            <label class="mock-radio" style="cursor:pointer;">
+              <input type="radio" name="good-plan" checked> Pro
+            </label>
+            <label class="mock-radio" style="cursor:pointer;">
+              <input type="radio" name="good-plan"> Enterprise
+            </label>
+          </div>
+          <div class="mock-help success" style="margin-top:0.4rem;">
+            Tab into group · Arrow keys switch · Space confirms · Label clicks select
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>All radios share the same <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">name</code> — only one can be selected</li>
+          <li>Order matches the spec (Free → Pro → Enterprise)</li>
+          <li>Clicking the label selects the radio (proper for/id linkage)</li>
+          <li>Visible focus indicator when group receives keyboard focus</li>
+          <li>Tab moves into group; arrow keys switch within group</li>
+          <li>Selection retained after a form validation error</li>
+          <li>Mandatory radio group: clear "Please select an option." error on empty submit</li>
+          <li>Selected state visually distinct from unselected (filled inner circle, color)</li>
+          <li>Touch target ≥ 44×44 px on mobile</li>
+          <li>ARIA attributes set for screen-reader announcement of group label and options</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 17 — URL
+     ============================================================ -->
+<section class="section" id="url">
+  <div class="section-head">
+    <div class="section-num">17<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 17 of 25 · url input</div>
+      <h2 class="section-title">A URL field is a parser, not a textbox.</h2>
+      <p class="section-lede">If the field accepts garbage, the database stores garbage, and downstream features break in subtle, expensive ways.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <label class="mock-label">Website URL</label>
+          <input class="mock-input error" value="example">
+          <div class="mock-help error" style="margin-top:0.4rem;">
+            Accepted as-is — no protocol, no TLD check. Saved as "example" in the DB.
+          </div>
+          <div class="mock-suggestion-row" style="background:#FEE2E2; color:#991B1B; border-left-color:#DC2626;">
+            Other inputs accepted without warning:
+            <code style="display:block; margin-top:0.3rem; background:transparent;">https://www.com</code>
+            <code style="display:block; background:transparent;">  https://example.com  </code>
+            <code style="display:block; background:transparent;">javascript:alert(1)</code>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>No validation — string with no dot is accepted as a URL</li>
+          <li>No protocol enforcement — "example.com" without https:// is saved as-is</li>
+          <li>Leading and trailing whitespace not trimmed</li>
+          <li><code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">javascript:</code> URIs accepted — XSS waiting to happen. <a href="https://www.google.com/search?sca_esv=8fdea6dbd6add952&sxsrf=ANbL-n445TOnm_F65fhnEsLKCUwtVaQjXA%3A1777918988535&q=javascript%3A+URIs+accepted+%E2%80%94+XSS+waiting+to+happen&nirf=javascript%3A+Is+accepted+%E2%80%94+XSS+waiting+to+happen&sa=X&ved=2ahUKEwjN6oCuoKCUAxWgi2MGHbcyLTYQ8BYoAXoECAkQAg&biw=1920&bih=911&dpr=1" target="_blank" rel="noopener noreferrer">Example</a></li>
+          <li>Encoded URLs and query parameters break — special chars unparsed</li>
+          <li>No max-length cap; 5000-character paste accepted</li>
+          <li>Generic "Wrong URL" error message — no guidance on what is wrong</li>
+          <li>Pasting via right-click does not work in Safari</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <label class="mock-label">Website URL</label>
+          <input class="mock-input valid" value="https://erainfotech.com.bd/middleware">
+          <div class="mock-help success" style="margin-top:0.4rem;">
+            Valid URL · HTTPS · 38 / 2048 chars
+          </div>
+          <div class="mock-suggestion-row success" style="margin-top:0.6rem;">
+            Bare domains auto-prepend <code style="background:transparent; color:#065F46;">https://</code>
+            · whitespace trimmed
+            · <code style="background:transparent; color:#065F46;">javascript:</code> rejected
+          </div>
+          <div style="margin-top:0.6rem;">
+            <label class="mock-label" style="font-size:0.78rem;">Validation messages by case</label>
+            <div style="font-size:0.85rem; color: var(--ink-soft); line-height:1.7; margin-top:0.3rem;">
+              Empty → <em>"Please enter a URL."</em><br>
+              No protocol → <em>auto-prepended https://</em><br>
+              No TLD → <em>"Please enter a valid URL with a domain extension."</em><br>
+              Unsafe scheme → <em>"This URL scheme is not allowed."</em>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Both http:// and https:// accepted; bare domains auto-prepend https://</li>
+          <li>Leading/trailing whitespace trimmed automatically</li>
+          <li>Unsafe schemes — <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">javascript:</code>, <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">data:</code>, <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">file:</code> — rejected</li>
+          <li>All standard TLDs accepted (.com, .bd, .xyz, .site, etc.)</li>
+          <li>Encoded URLs and query parameters preserved</li>
+          <li>Anchor fragments (#section) preserved</li>
+          <li>Max length enforced (e.g. 2048 chars) with a clear error</li>
+          <li>Specific error messages per case — not just "Wrong URL"</li>
+          <li>Paste works via Ctrl+V, Cmd+V, and right-click menu in all major browsers</li>
+          <li>Pressing Enter triggers submit (when inside a form)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 18 — TEXTAREA
+     ============================================================ -->
+<section class="section" id="textarea">
+  <div class="section-head">
+    <div class="section-num">18<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 18 of 25 · multiline input</div>
+      <h2 class="section-title">A text area is an attack surface, not a notepad.</h2>
+      <p class="section-lede">Anywhere users can paste text, attackers can paste payloads. Sanitize, count, and constrain — every time.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <label class="mock-label">Comments</label>
+          <textarea class="mock-textarea error">&lt;script&gt;alert("XSS")&lt;/script&gt; This is rendered as HTML on the result page.</textarea>
+          <div class="mock-help error" style="margin-top:0.4rem;">
+            No char limit · No sanitize · No word count
+          </div>
+          <div style="margin-top:0.7rem; padding:0.7rem 0.85rem; background:#FEE2E2; border-radius:4px; color:#991B1B; font-size:0.85rem; line-height:1.5;">
+            <strong>On result page →</strong> the script tag executes. Alert pops. The user is logged out. Cookies are stolen.
+          </div>
+          <div style="background: #0F172A; border-radius: 4px; padding: 0.7rem 0.85rem; margin-top:0.6rem; font-family: var(--mono); font-size: 0.78rem; color: #FCA5A5; line-height: 1.5;">
+            DB query: SELECT * FROM comments WHERE text = '<span class="str">' OR 1=1 --</span>'<br>
+            <span style="color:#94A3B8;">// SQL injection</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li><code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">&lt;script&gt;</code> renders and executes on the result page — XSS</li>
+          <li>No SQL parameterization — single quote injection works</li>
+          <li>No max-length cap — 1 MB paste accepted, breaks the database</li>
+          <li>No word/character count visible to the user</li>
+          <li>Format / highlight from copy-paste carries over into the field</li>
+          <li>Backspace and Delete keys behave inconsistently across browsers</li>
+          <li>Drag-and-drop file paste accepts .exe and .js files without warning</li>
+          <li>Validation error closes the field — user loses their input</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <label class="mock-label">Comments</label>
+          <textarea class="mock-textarea">Looks great — please add the BD flag prefix on the Mobile field next iteration.
+
+Also: tooltip on the route-priority dropdown could be a sentence shorter.</textarea>
+          <div class="mock-textarea-count">
+            <span>Word count: 28</span>
+            <span>173 / 2,000 characters</span>
+          </div>
+          <div class="mock-help success" style="margin-top:0.4rem;">
+            Sanitized · word count live · 2000-char cap enforced
+          </div>
+          <div style="background: #0F172A; border-radius: 4px; padding: 0.7rem 0.85rem; margin-top:0.6rem; font-family: var(--mono); font-size: 0.78rem; color: #6EE7B7; line-height: 1.5;">
+            // server side<br>
+            sanitize(input) → strip-tags + escape<br>
+            INSERT INTO comments (text) VALUES ($1)<br>
+            <span style="color:#94A3B8;">// parameterized query</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>HTML and JavaScript stripped or escaped server-side — never rendered as code</li>
+          <li>SQL is parameterized; injection attempts fail silently</li>
+          <li>Hard char cap (e.g. 2,000) with live counter and clear "X / max" indicator</li>
+          <li>Word count updates on type, paste, and right-click paste</li>
+          <li>Pasted formatting normalized to plain text</li>
+          <li>Drag-and-drop file paste only accepts whitelisted text formats</li>
+          <li>Validation error keeps the field editable; user does not lose content</li>
+          <li>Standard shortcuts work (Ctrl/Cmd + C/V/X/A/Z) cross-browser</li>
+          <li>Resize handle visible; field grows but does not break layout</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 19 — COMMA
+     ============================================================ -->
+<section class="section" id="comma">
+  <div class="section-head">
+    <div class="section-num">19<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 19 of 25 · currency / amount field</div>
+      <h2 class="section-title">Numbers should look like numbers.</h2>
+      <p class="section-lede">A number field that accepts free text creates messy data, broken reports, and angry finance teams.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <label class="mock-label">Amount (BDT)</label>
+          <input class="mock-currency error" value="1,000,000.5.5">
+          <div class="mock-help error" style="margin-top:0.4rem;">
+            Multiple decimals · letters allowed · no live formatting
+          </div>
+          <div style="margin-top:0.7rem; font-size:0.85rem; color:var(--ink-soft); line-height:1.7;">
+            Other inputs accepted:<br>
+            <code style="background:rgba(0,0,0,0.06); padding:1px 5px; border-radius:3px;">,1000000</code> — leading comma<br>
+            <code style="background:rgba(0,0,0,0.06); padding:1px 5px; border-radius:3px;">10000abc</code> — letters<br>
+            <code style="background:rgba(0,0,0,0.06); padding:1px 5px; border-radius:3px;">1000000</code> — saved without commas in DB and shown without commas everywhere
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Multiple decimal points accepted — value reads "1,000,000.5.5"</li>
+          <li>Leading comma ",1000000" accepted</li>
+          <li>Letters and special characters allowed</li>
+          <li>No live formatting — user types 1000000, sees 1000000</li>
+          <li>Saved unformatted in the DB; reports show "1000000" with no commas</li>
+          <li>Negative values handled inconsistently — minus sign sometimes stripped</li>
+          <li>Maximum allowed value not enforced — overflow on summary aggregations</li>
+          <li>API returns the raw number; frontend re-implements formatting incorrectly</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <label class="mock-label">Amount (BDT)</label>
+          <input class="mock-currency valid" value="1,250,000.75">
+          <div class="mock-help success" style="margin-top:0.4rem;">
+            Comma-formatted as you type · max 99,999,999 · 2 decimals
+          </div>
+          <div style="margin-top:0.6rem; font-size:0.85rem; color:var(--ink-soft); line-height:1.7;">
+            Validation messages:<br>
+            Letters → <em>"Only numeric values and commas are allowed."</em><br>
+            Multiple decimals → <em>"Multiple decimal points are not allowed."</em><br>
+            Leading comma → <em>"Number cannot start with a comma."</em>
+          </div>
+          <div style="background: #0F172A; border-radius: 4px; padding: 0.7rem 0.85rem; margin-top:0.6rem; font-family: var(--mono); font-size: 0.78rem; color: #6EE7B7; line-height: 1.5;">
+            { "amount": 1250000.75 }<br>
+            <span style="color:#94A3B8;">// API returns raw number; UI formats consistently</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Commas inserted automatically as the user types: 1000 → 1,000 → 10,000</li>
+          <li>Decimal point allowed once; subsequent decimals rejected</li>
+          <li>Negative values supported; minus sign always preceded by a digit</li>
+          <li>Maximum value enforced (e.g. 99,999,999) with a clear error</li>
+          <li>Letters, special characters, and Unicode digits rejected</li>
+          <li>Stored as a raw number in the DB; commas added in display layer only</li>
+          <li>Same formatting in every view — list, profile, dashboard, report, API</li>
+          <li>Reports show comma-formatted values, never "1000000"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 20 — TOOLTIP
+     ============================================================ -->
+<section class="section" id="tooltip">
+  <div class="section-head">
+    <div class="section-num">20<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 20 of 25 · tooltip</div>
+      <h2 class="section-title">Tooltips are a contract with the user.</h2>
+      <p class="section-lede">A tooltip that lies, lags, or hides off-screen breaks trust faster than a missing feature.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-tooltip-wrap" style="margin-left:140px;">
+            <div class="mock-tooltip cut">
+              Click here for more infomation about this filed
+            </div>
+            <span style="color:var(--ink); font-size:0.95rem;">Provider type</span>
+            <span class="info-icon" style="background:#94A3B8;">i</span>
+          </div>
+          <div class="mock-help error" style="margin-top:0.4rem;">
+            Tooltip cut off at screen edge · spelling errors · vague text
+          </div>
+          <div style="margin-top:0.6rem; font-size:0.85rem; color:var(--ink-soft); line-height:1.6;">
+            Other failures:<br>
+            • Disappears when you move the pointer onto the tooltip itself<br>
+            • Esc does not dismiss it<br>
+            • Not reachable via Tab — hover-only<br>
+            • No ARIA — screen readers stay silent
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Tooltip cut off at the screen edge — does not auto-flip</li>
+          <li>Vague text — "Click here for more information"</li>
+          <li>Spelling errors in the tooltip body</li>
+          <li>Disappears when the pointer moves onto the tooltip (cannot copy text from it)</li>
+          <li>Esc does not dismiss it</li>
+          <li>Hover-only — keyboard users never see it</li>
+          <li>No <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">aria-describedby</code> or <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">role="tooltip"</code> — screen readers ignore it. <a href="https://www.google.com/search?q=No+aria-describedby+or+role%3D%22tooltip%22+%E2%80%94+screen+readers+ignore+it&sca_esv=8fdea6dbd6add952&biw=1920&bih=911&sxsrf=ANbL-n4nbs91uSHG_KhriprhLGqYQ5UvpQ%3A1777918718080&ei=_uL4abPSBJad4-EPjqD2mAw&ved=0ahUKEwizyYWtn6CUAxWWzjgGHQ6QHcMQ4dUDCBE&uact=5&oq=No+aria-describedby+or+role%3D%22tooltip%22+%E2%80%94+screen+readers+ignore+it&gs_lp=Egxnd3Mtd2l6LXNlcnAiQk5vIGFyaWEtZGVzY3JpYmVkYnkgb3Igcm9sZT0idG9vbHRpcCIg4oCUIHNjcmVlbiByZWFkZXJzIGlnbm9yZSBpdEiLCFC8BVi8BXABeACQAQCYAXegAXeqAQMwLjG4AQPIAQD4AQL4AQGYAgCgAgCYAwCIBgGSBwCgB1ayBwC4BwDCBwDIBwCACAE&sclient=gws-wiz-serp" target="_blank" rel="noopener noreferrer">Example</a></li>
+          <li>Z-index too low — tooltip rendered behind other elements</li>
+          <li>Animation ignores the user's prefers-reduced-motion setting</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-tooltip-wrap">
+            <div class="mock-tooltip">
+              Routes are matched against this provider's type
+            </div>
+            <span style="color:var(--ink); font-size:0.95rem;">Provider type</span>
+            <span class="info-icon">i</span>
+          </div>
+          <div class="mock-help success" style="margin-top:0.4rem;">
+            Specific text · keyboard-focusable · Esc dismisses · auto-flips at edges
+          </div>
+          <div style="margin-top:0.6rem; font-size:0.85rem; color:var(--ink-soft); line-height:1.6;">
+            Behavior verified:<br>
+            • Tab focuses the icon → tooltip appears<br>
+            • Hover persists when pointer enters the tooltip itself<br>
+            • Esc dismisses<br>
+            • Screen readers announce content via <code style="background:rgba(0,0,0,0.06); padding:1px 5px; border-radius:3px;">aria-describedby</code>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Tooltip text is concise and specific — answers the actual question</li>
+          <li>Spelling and grammar reviewed before merge</li>
+          <li>Auto-flips at screen edges; never cut off</li>
+          <li>Persists when the pointer moves onto the tooltip body</li>
+          <li>Dismissible via Esc (per WCAG 2.1.1)</li>
+          <li>Triggered by keyboard focus, not just hover (WCAG 1.4.13)</li>
+          <li>Linked via <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">aria-describedby</code>; container has <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">role="tooltip"</code></li>
+          <li>Z-index high enough to render above modals and dropdowns</li>
+          <li>Animation respects prefers-reduced-motion</li>
+          <li>Localized when the product is multi-language</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 21 — LINKS
+     ============================================================ -->
+<section class="section" id="links">
+  <div class="section-head">
+    <div class="section-num">21<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 21 of 25 · links</div>
+      <h2 class="section-title">Links are the product's skeleton.</h2>
+      <p class="section-lede">Every broken link is a dead end. Every "click here" is a missed accessibility signal. Every external link without rel is a security hole.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form mock-link-block">
+          <div>For the documentation, <a href="#" class="bad-link" style="color:var(--ink); text-decoration:none;">click here</a>.</div>
+          <div>For pricing details, <a href="#" class="bad-link" style="color:var(--ink); text-decoration:none;">click here</a>.</div>
+          <div>For partner integration, <a href="#" class="bad-link" style="color:var(--ink); text-decoration:none;">click here</a>.</div>
+          <div>External: <a href="http://partner-site.com" class="bad-link" target="_blank" style="color:var(--ink); text-decoration:none;">http://partner-site.com</a></div>
+          <div class="mock-help error" style="margin-top:0.4rem;">
+            All "click here". HTTP, no rel="noopener". 404s in production.
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Generic "click here" / "more" text — no context, no accessibility</li>
+          <li>Link text indistinguishable from body text — same color, no underline</li>
+          <li>External links use http:// — credentials and tokens leak in transit</li>
+          <li>External links open in new tab without <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">rel="noopener noreferrer"</code> — reverse-tabnabbing risk. <a href="https://www.google.com/search?q=External+links+open+in+new+tab+without+rel%3D%22noopener+noreferrer%22+%E2%80%94+reverse-tabnabbing+risk&oq=External+links+open+in+new+tab+without+rel%3D%22noopener+noreferrer%22+%E2%80%94+reverse-tabnabbing+risk&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRiPAtIBBzM2N2owajeoAgCwAgA&sourceid=chrome&ie=UTF-8" target="_blank" rel="noopener noreferrer">Example</a></li>
+          <li>Multiple 404 / dead links present in production</li>
+          <li>Anchor (#section) links do not scroll smoothly; target hidden behind sticky header</li>
+          <li><code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">mailto:</code> and <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">tel:</code> links not used; phone numbers as plain text</li>
+          <li>No focus indicator on Tab — keyboard users lose place</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form mock-link-block">
+          <div>Read the <a href="#" class="mock-link">Middleware integration guide</a>.</div>
+          <div>Compare <a href="#" class="mock-link">enterprise pricing tiers</a>.</div>
+          <div>For partner setup, see <a href="#" class="mock-link">Acme Routing setup checklist</a>.</div>
+          <div>External: <a href="https://partner-site.com" class="mock-link">partner-site.com</a> <span style="color:var(--muted); font-size:0.78rem;">(opens in new tab · noopener)</span></div>
+          <div>Email: <a href="mailto:support@erainfotech.com" class="mock-link">support@erainfotech.com</a></div>
+          <div class="mock-help success" style="margin-top:0.4rem;">
+            Descriptive text · HTTPS · noopener · checked monthly for 404s
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Link text describes the destination — never "click here", never the bare URL</li>
+          <li>Visually distinct — colored, underlined; hover and visited states differ</li>
+          <li>External links use https:// only</li>
+          <li>External <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">target="_blank"</code> links carry <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">rel="noopener noreferrer"</code></li>
+          <li>Internal anchor links scroll smoothly; target offset accounts for sticky header</li>
+          <li><code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">mailto:</code> and <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:0.85em;">tel:</code> links open the user's email / dialer</li>
+          <li>Visited links are visually distinguishable</li>
+          <li>Visible focus ring on Tab; never globally suppressed</li>
+          <li>Automated 404 / broken-link checker runs in CI; build fails on dead links</li>
+          <li>Image links: entire image clickable; alt text describes destination</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 22 — UPLOAD
+     ============================================================ -->
+<section class="section" id="upload">
+  <div class="section-head">
+    <div class="section-num">22<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 22 of 25 · upload control</div>
+      <h2 class="section-title">File flows are silent killers.</h2>
+      <p class="section-lede">
+        They look fine in dev — small test files, fast network — and break
+        in production. Type, size, progress, and errors all need to be
+        designed in from the start.
+      </p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <button class="mock-btn mock-btn-primary" style="align-self:flex-start;">Upload</button>
+          <div class="mock-help error">No file-type filter, no size limit, no progress.</div>
+
+          <div style="margin-top: 0.5rem;">
+            <div style="font-size: 0.85rem; color: var(--ink-soft); margin-bottom:0.4rem; font-weight:500;">After clicking — page appears frozen</div>
+            <div style="border:1px solid var(--line); border-radius:5px; padding:0.85rem; background:#F8FAFC; font-size:0.85rem; color:var(--muted); display:flex; align-items:center; gap:0.6rem;">
+              <span style="width:10px; height:10px; background:var(--muted); border-radius:50%;"></span>
+              uploading_huge_file_500MB.exe
+            </div>
+            <div class="mock-help error" style="margin-top:0.5rem;">No progress bar. No cancel. User clicks Upload again.</div>
+          </div>
+
+          <div class="mock-toast" style="margin-top:0.5rem;">
+            <strong>Upload failed.</strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Server accepts disallowed file types (client-only check)</li>
+          <li>No size limit; users upload 500 MB files and break the disk</li>
+          <li>No progress indicator — user thinks the page is frozen</li>
+          <li>Cancel button missing or non-functional during upload</li>
+          <li>Generic upload errors with no reason given</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-form">
+          <div class="mock-upload">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-7.5-9-3-3m0 0-3 3m3-3v11.25"/></svg>
+            <div class="label">Drop file here or click to browse</div>
+            <div class="meta">PDF, DOCX, JPG, PNG — up to 10 MB</div>
+          </div>
+
+          <div class="mock-progress" style="background:white; border:1px solid var(--line); border-radius:5px; padding:0.85rem;">
+            <div class="file-row">
+              <span>contract_q2.pdf · 2.4 MB</span>
+              <span class="pct">62%</span>
+            </div>
+            <div class="bar"><div style="width:62%;"></div></div>
+            <div class="actions">
+              <button>Cancel</button>
+            </div>
+          </div>
+
+          <div class="mock-toast" style="background: var(--good-tint); border-left-color: var(--good); color: var(--good-deep);">
+            <strong>Uploaded.</strong> contract_q2.pdf · 2.4 MB · ready to attach.
+          </div>
+
+          <div class="mock-toast">
+            <strong>File too large.</strong> Maximum size is 10 MB. Your file is 24 MB.
+          </div>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Allowed file types enforced on <strong>both</strong> client and server</li>
+          <li>Size limit enforced; clear error states the actual limit</li>
+          <li>Progress bar with percentage during upload</li>
+          <li>Cancel button stops the upload and resets the input</li>
+          <li>Download filenames are descriptive (Invoice_2026-05.pdf)</li>
+          <li>Specific upload errors: type, size, password-protected, etc.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 23 — DOWNLOAD
+     ============================================================ -->
+<section class="section" id="download">
+  <div class="section-head">
+    <div class="section-num">23<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 23 of 25 · pdf / report download</div>
+      <h2 class="section-title">A report is a deliverable, not a database dump.</h2>
+      <p class="section-lede">When the report is wrong, the customer assumes the system is wrong. Every layout glitch is a credibility tax.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-pdf bad-pdf">
+          <div class="pdf-head">
+            <div class="pdf-logo broken">[ logo missing ]</div>
+            <div style="text-align:right;">
+              <h4 style="color:var(--bad);">Reprot</h4>
+              <div class="pdf-meta">file: data.pdf</div>
+            </div>
+          </div>
+          <div class="pdf-row"><span>Total transactions</span><span>1000000</span></div>
+          <div class="pdf-row"><span>Successful</span><span>987,432</span></div>
+          <div class="pdf-row cut">Average fee per route — Lorem ipsum dolor sit amet, conse</div>
+          <div class="pdf-row" style="border-top:1px dashed #DC2626; margin-top: 0.3rem; padding-top:0.3rem;">
+            <span>Failed</span><span>12,568</span>
+          </div>
+          <div class="pdf-foot">
+            <span>—</span>
+            <span style="color:var(--bad);">Page ?</span>
+          </div>
+        </div>
+        <div class="mock-help error" style="margin-top:0.5rem;">
+          Title typo · numbers unformatted · content cut · page numbers missing
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Title misspelled — "Reprot" instead of "Report"</li>
+          <li>Numbers shown without commas — "1000000" not "1,000,000"</li>
+          <li>Content cut off at the bottom of the page; sentences trail off mid-word</li>
+          <li>No page numbers; cover page missing</li>
+          <li>Logo missing or broken in PDF render</li>
+          <li>Filename is generic — "data.pdf"; not derived from report or upload</li>
+          <li>Different users sometimes receive each other's reports (cache key bug)</li>
+          <li>Empty / no-data report still downloads as a blank PDF</li>
+          <li>Special characters render as boxes (□)</li>
+          <li>Links inside the PDF not clickable</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-pdf">
+          <div class="pdf-head">
+            <div class="pdf-logo">EraMW</div>
+            <div style="text-align:right;">
+              <h4>Provider Performance Report</h4>
+              <div class="pdf-meta">Q3 2026 · Generated 2026-04-30 14:22 BDT</div>
+            </div>
+          </div>
+          <div class="pdf-row"><span>Total transactions</span><span style="font-family:var(--mono);">1,000,000</span></div>
+          <div class="pdf-row"><span>Successful</span><span style="font-family:var(--mono); color:var(--good);">987,432</span></div>
+          <div class="pdf-row"><span>Failed</span><span style="font-family:var(--mono); color:var(--bad);">12,568</span></div>
+          <div class="pdf-row"><span>Average fee per route</span><span style="font-family:var(--mono);">৳ 24.18</span></div>
+          <div class="pdf-foot">
+            <span>EraMW Middleware · confidential</span>
+            <span>Page 1 of 14</span>
+          </div>
+        </div>
+        <div class="mock-help success" style="margin-top:0.5rem;">
+          Filename: <code style="background:rgba(0,0,0,0.06); padding:1px 5px; border-radius:3px;">ProviderPerformance_2026Q3_acme.pdf</code>
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Logo, title, generated-on timestamp visible on the cover and header</li>
+          <li>Numbers consistently comma-formatted; currency symbol where relevant</li>
+          <li>Page break logic clean — no orphan lines, no cut-off content</li>
+          <li>Page numbers ("Page X of Y") on every page</li>
+          <li>Filename derived from report or upload — never "data.pdf"</li>
+          <li>Report scoped per user; no cross-user data leak</li>
+          <li>Empty / no-data state blocked — clear message instead of blank PDF</li>
+          <li>Special characters render correctly — Bangla, Arabic, emoji, ৳</li>
+          <li>Links inside the PDF are clickable; open in a new tab</li>
+          <li>On-screen result, downloaded PDF, and printed output all match</li>
+          <li>Excel / DOCX / TXT exports produce valid files in their respective formats</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 24 — HEADER
+     ============================================================ -->
+<section class="section" id="header">
+  <div class="section-head">
+    <div class="section-num">24<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 24 of 25 · header &amp; navigation</div>
+      <h2 class="section-title">The header is on every page.</h2>
+      <p class="section-lede">
+        It runs across every screen of the product. If it breaks on mobile,
+        misaligns on Safari, or hides content when sticky — every screen
+        is broken.
+      </p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-nav broken">
+          <div class="top">
+            <div style="display:flex; align-items:center; gap:0.6rem;">
+              <span class="mock-broken-img">?</span>
+              <div class="logo">EraMW</div>
+            </div>
+            <div class="links">
+              <a href="#">Home</a>
+              <a href="#">Provders</a>
+              <a href="#">Reprots</a>
+              <a href="#">Setings</a>
+            </div>
+          </div>
+          <div class="body-area">
+            Dashboard content begins here…
+          </div>
+        </div>
+        <div class="mock-help error" style="margin-top: 0.6rem;">
+          Sticky header overlaps body content. Logo image is broken. Link spelling errors.
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Header looks fine on Chrome desktop; broken on Safari / Edge</li>
+          <li>Sticky header overlaps the first paragraph of body content</li>
+          <li>Hamburger menu opens but does not close on outside click</li>
+          <li>Broken images / missing icons in the header</li>
+          <li>Spelling errors in link text (<em>“Reprots”</em>, <em>“Setings”</em>)</li>
+          <li>Logo does not link back to the home page</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-nav">
+          <div class="top">
+            <a href="#" style="text-decoration:none; color:white;">
+              <div class="logo">EraMW</div>
+            </a>
+            <div class="links">
+              <a href="#" class="active">Home</a>
+              <a href="#">Providers</a>
+              <a href="#">Reports</a>
+              <a href="#">Settings</a>
+            </div>
+          </div>
+          <div class="body-area">
+            Dashboard content begins here, with proper spacing below the header. Content is never hidden.
+          </div>
+        </div>
+        <div class="mock-help success" style="margin-top: 0.6rem;">
+          Verified on Chrome, Firefox, Safari, Edge. Mobile layout tested.
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Header verified on Chrome, Firefox, Safari, Edge</li>
+          <li>Sticky header has correct padding so content is never hidden</li>
+          <li>Hamburger opens and closes on tap, link click, or outside click</li>
+          <li>All header assets load; alt text on every icon</li>
+          <li>Active page underlined / colored to show current screen</li>
+          <li>Logo always navigates to the home page from any screen</li>
+          <li>All header items reachable via Tab key</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 25 — FOOTER-SEC
+     ============================================================ -->
+<section class="section" id="footer-sec">
+  <div class="section-head">
+    <div class="section-num">25<em>.</em></div>
+    <div class="section-info">
+      <div class="section-kicker">Category 25 of 25 · site footer</div>
+      <h2 class="section-title">The footer is the last thing they see.</h2>
+      <p class="section-lede">A broken footer signals a careless team. Spelling, alignment, links, copyright year — get all of them right.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM8.94 10l-2.47 2.47a.75.75 0 1 0 1.06 1.06L10 11.06l2.47 2.47a.75.75 0 1 0 1.06-1.06L11.06 10l2.47-2.47a.75.75 0 1 0-1.06-1.06L10 8.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L8.94 10Z"/></svg>
+        Bad — Will be rejected
+      </div>
+      <div class="col-mockup">
+        <div class="mock-mini-footer bad-footer">
+          <div class="footer-cols">
+            <div>
+              <h5>Cmpany</h5>
+              <a href="#">About us</a>
+              <a href="#">Carrers</a>
+              <a href="#">Contact</a>
+            </div>
+            <div>
+              <h5>Resources</h5>
+              <a href="#">Documentaion</a>
+              <a href="#">Support</a>
+            </div>
+          </div>
+          <div class="socials">
+            <span class="s">F</span>
+            <span class="s">T</span>
+          </div>
+          <div class="copy">
+            © 2022 EraMW · all rigths reserved
+          </div>
+        </div>
+        <div class="mock-help error" style="margin-top:0.5rem;">
+          Misspellings · 2022 copyright · 4 broken links · social icons missing
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Spelling errors throughout — "Cmpany", "Carrers", "Documentaion"</li>
+          <li>Copyright year is stale — "© 2022" on a page rendered in 2026</li>
+          <li>Some footer links return 404</li>
+          <li>Social icons missing for Instagram and LinkedIn</li>
+          <li>Footer differs across pages — different links on Home vs Dashboard</li>
+          <li>Newsletter email field has no validation</li>
+          <li>Logo in footer does not link back to the home page</li>
+          <li>Extra white space below the footer at 1440px wide screens</li>
+          <li>Footer breaks (overflows) on mobile — columns do not stack</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col good">
+      <div class="col-head">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-1.06-5.94 5.47-5.47a.75.75 0 1 0-1.06-1.06L8.47 10.53 6.53 8.59a.75.75 0 1 0-1.06 1.06l2.47 2.47c.3.3.77.3 1.06 0Z"/></svg>
+        Good — Passes review
+      </div>
+      <div class="col-mockup">
+        <div class="mock-mini-footer">
+          <div class="footer-cols">
+            <div>
+              <h5>Company</h5>
+              <a href="#">About us</a>
+              <a href="#">Careers</a>
+              <a href="#">Contact</a>
+            </div>
+            <div>
+              <h5>Resources</h5>
+              <a href="#">Documentation</a>
+              <a href="#">API reference</a>
+              <a href="#">Support</a>
+            </div>
+            <div>
+              <h5>Legal</h5>
+              <a href="#">Privacy</a>
+              <a href="#">Terms</a>
+            </div>
+          </div>
+          <div class="socials">
+            <span class="s">F</span>
+            <span class="s">X</span>
+            <span class="s">in</span>
+            <span class="s">IG</span>
+          </div>
+          <div class="copy">
+            <!-- <span>© 2026 Era Infotech BD · All rights reserved</span> -->
+            <span>All rights reserved by Kaushik Debdas</span>
+            <span>v1.4.2</span>
+          </div>
+        </div>
+        <div class="mock-help success" style="margin-top:0.5rem;">
+          Identical on every page · responsive · CI broken-link check passes
+        </div>
+      </div>
+      <div class="col-notes">
+        <ul class="note-list">
+          <li>Spelling and grammar reviewed before merge</li>
+          <li>Copyright year auto-updates from server year — never stale</li>
+          <li>All footer links resolve (HTTP 200/301/302) — verified by CI broken-link job</li>
+          <li>Footer is identical across every page</li>
+          <li>Logo in the footer links back to the home page</li>
+          <li>Social icons present and link to the official accounts; open in new tab</li>
+          <li>Newsletter email field validated; success and error messages clear</li>
+          <li>Equal spacing top and bottom; no extra whitespace at high resolutions</li>
+          <li>Stacks cleanly on mobile and tablet — no overflow, no broken layout</li>
+          <li>Cursor changes to pointer on hover over links</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h3>Prevention is faster than fixing.</h3>
+      <p>
+        This guide is a living document. If you spot a category that should be added or a “bad
+        example” that turns up too often in QA, raise it with the SQA team. The faster the team
+        agrees on what counts as a basic, the faster releases ship clean.
+      </p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:1rem;">
+      <div class="meta">SQA Release Standards</div>
+      <!-- <div class="meta">Era Infotech BD</div> -->
+      <div class="meta">v1.0 · <span>Release denied if basics fail</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Smooth scroll active section indicator on nav
+  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          if (link.getAttribute('href') === '#' + id) {
+            link.style.color = 'var(--bad)';
+            link.style.fontWeight = '600';
+          } else {
+            link.style.color = '';
+            link.style.fontWeight = '';
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Toggle eye icons (purely cosmetic — visual demo only)
+  document.querySelectorAll('.mock-pwd-wrap .eye').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const input = btn.parentElement.querySelector('input');
+      if (input) {
+        if (input.type === 'password') {
+          input.type = 'text';
+          input.value = 'MyP@ssw0rd!';
+        } else {
+          input.type = 'password';
+          input.value = '••••••••••';
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
