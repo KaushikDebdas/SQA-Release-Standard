@@ -75,7 +75,7 @@ No dependencies, no build tools — it's a static HTML file.
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-org>/<your-repo>.git
+git clone https://github.com/KaushikDebdas/SQA-Release-Standard.git
 cd <your-repo>
 
 # Open directly in a browser
